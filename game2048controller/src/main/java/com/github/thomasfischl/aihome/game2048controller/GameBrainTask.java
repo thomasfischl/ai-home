@@ -11,42 +11,61 @@ import com.github.thomasfischl.aihome.game2048controller.util.NormalizerGame2048
 
 public class GameBrainTask implements Runnable {
 
+  private static NormalizerGame2048 normalizer = new NormalizerGame2048();
   private Random rand = new Random();
   private IGameController controller;
   private Brain brain;
-  private static NormalizerGame2048 normalizer = new NormalizerGame2048();
+  private long thinkTime;
+  private boolean log;
 
-  public GameBrainTask(IGameController controller, Brain brain) {
+  public GameBrainTask(IGameController controller, Brain brain, long thinkTime, boolean log) {
     this.controller = controller;
     this.brain = brain;
+    this.thinkTime = thinkTime;
+    this.log = log;
   }
 
   @Override
   public void run() {
     try {
+      start();
       GameGrid lastGrid = null;
       while (controller.state() == GameState.RUNNING) {
         GameGrid grid = controller.getGrid();
         move(lastGrid, grid);
         lastGrid = grid;
         try {
-          Thread.sleep(100);
+          Thread.sleep(thinkTime);
         } catch (InterruptedException e) {
           e.printStackTrace();
           break;
         }
 
-        System.out.println(grid);
+        log(grid.toString());
       }
 
       reportResult();
-      GameTrainerMain.pool.shutdown();
+      stop();
     } catch (Exception e) {
       e.printStackTrace();
     }
   }
 
-  private void reportResult() {
+  protected void start() {
+    // nothing to do
+  }
+
+  protected void stop() {
+    // nothing to do
+  }
+
+  protected void log(String msg) {
+    if (log) {
+      System.out.println(msg);
+    }
+  }
+
+  protected void reportResult() {
     GameGrid grid = controller.getGrid();
     System.out.println("Finished:   " + controller.state());
     System.out.println("Score:      " + grid.score());
@@ -54,19 +73,23 @@ public class GameBrainTask implements Runnable {
     System.out.println(grid);
   }
 
-  private void move(GameGrid lastGrid, GameGrid grid) {
-    Direction key;
-    if (grid.equals(lastGrid)) {
-      key = Direction.values()[rand.nextInt(4)];
-      System.out.println("Random move");
-    } else {
-      key = calculateNextStep(grid);
-    }
-
+  protected void move(GameGrid lastGrid, GameGrid grid) {
+    Direction key = calculateNextStep(lastGrid, grid);
     controller.move(key);
   }
 
-  private Direction calculateNextStep(GameGrid grid) {
+  protected Direction calculateNextStep(GameGrid lastGrid, GameGrid grid) {
+    Direction key;
+    if (grid.equals(lastGrid)) {
+      key = Direction.values()[rand.nextInt(4)];
+      log("Random move");
+    } else {
+      key = calculateBrainNextStep(grid);
+    }
+    return key;
+  }
+
+  protected Direction calculateBrainNextStep(GameGrid grid) {
 
     double[] data = new double[16];
     int idx = 0;
@@ -101,7 +124,7 @@ public class GameBrainTask implements Runnable {
       key = Direction.RIGHT;
       max = result[3];
     }
-    System.out.println("Next move: " + key);
+    log("Next move: " + key);
 
     return key;
   }

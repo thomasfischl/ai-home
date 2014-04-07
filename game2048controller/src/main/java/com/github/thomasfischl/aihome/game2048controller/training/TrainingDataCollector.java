@@ -1,29 +1,33 @@
-package com.github.thomasfischl.aihome.game2048controller;
+package com.github.thomasfischl.aihome.game2048controller.training;
 
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.Locale;
 
 import com.github.thomasfischl.aihome.game2048controller.controller.Direction;
 import com.github.thomasfischl.aihome.game2048controller.controller.GameGrid;
 import com.github.thomasfischl.aihome.game2048controller.util.NormalizerGame2048;
 
-public class GameTrainDataCollector {
+public class TrainingDataCollector {
 
   private String sessionId;
   private BufferedWriter writer;
 
   private NormalizerGame2048 normalizer = new NormalizerGame2048();
+  private File file;
 
-  public GameTrainDataCollector(File folder) {
+  public TrainingDataCollector(File folder) {
     // sessionId = UUID.randomUUID().toString();
     sessionId = String.valueOf(System.currentTimeMillis());
+    folder.mkdirs();
+    file = new File(folder, sessionId + ".tdata");
+  }
+
+  public void start() {
     try {
-      folder.mkdirs();
-      writer = new BufferedWriter(new FileWriter(new File(folder, sessionId + ".tdata")));
-      writer.write("d0,d1,d2,d3,d4,d5,d6,d7,d8,d9,d10,d11,d12,d13,d14,d15,out0,out1,out2,out3\n");
+      writer = new BufferedWriter(new FileWriter(file));
+      writer.write(TrainingDataUtil.HEADER);
     } catch (IOException e) {
       e.printStackTrace();
     }
@@ -48,12 +52,17 @@ public class GameTrainDataCollector {
     }
   }
 
+  public void deleteDataFile() {
+    if (file != null) {
+      file.delete();
+    }
+  }
+
   private String getGridDataAsString(GameGrid grid) {
     StringBuffer sb = new StringBuffer();
     for (int i = 0; i < grid.getDimension(); i++) {
       for (int j = 0; j < grid.getDimension(); j++) {
-        Double val = normalizer.map(grid.getCell(j, i));
-        sb.append(String.format(Locale.US, "%.2f", val)).append(",");
+        sb.append(normalizer.mapAsString(grid.getCell(j, i))).append(",");
       }
     }
     return sb.toString();

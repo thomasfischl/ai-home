@@ -9,11 +9,9 @@ import com.github.thomasfischl.aihome.game2048controller.controller.java.JavaGam
 
 public class GameTrainerMain {
 
-  static IGameController controller;
-
+  private static IGameController controller;
   private static Brain brain;
-
-  static ScheduledExecutorService pool;
+  private static ScheduledExecutorService pool;
 
   public static void main(String[] args) throws Exception {
     brain = new Brain();
@@ -23,7 +21,12 @@ public class GameTrainerMain {
     // controller = new
     // SeleniumGameController("http://gabrielecirulli.github.io/2048/");
     controller.start();
-    pool.submit(new GameBrainTask(controller, brain));
+    pool.submit(new GameBrainTask(controller, brain, 100, true) {
+      @Override
+      protected void stop() {
+        pool.shutdown();
+      }
+    });
   }
 
 }

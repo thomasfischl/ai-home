@@ -1,6 +1,7 @@
 package com.github.thomasfischl.aihome.game2048controller.util;
 
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 public class NormalizerGame2048 {
@@ -16,6 +17,10 @@ public class NormalizerGame2048 {
 
   public double map(int val) {
     return mapping.get(val);
+  }
+
+  public String mapAsString(int val) {
+    return String.format(Locale.US, "%.2f", map(val));
   }
 
 }
