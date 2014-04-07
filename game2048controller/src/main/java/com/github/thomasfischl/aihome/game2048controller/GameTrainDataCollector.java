@@ -6,22 +6,18 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Locale;
 
-import com.github.thomasfischl.aihome.brain.NormalizerGame2048;
-import com.github.thomasfischl.aihome.game2048controller.GameController.KeyCode;
+import com.github.thomasfischl.aihome.game2048controller.controller.Direction;
+import com.github.thomasfischl.aihome.game2048controller.controller.GameGrid;
+import com.github.thomasfischl.aihome.game2048controller.util.NormalizerGame2048;
 
-public class GameTrainer {
+public class GameTrainDataCollector {
 
   private String sessionId;
   private BufferedWriter writer;
 
   private NormalizerGame2048 normalizer = new NormalizerGame2048();
 
-  public GameTrainer(File folder) {
-
-    // for (Entry<Integer, Double> entry : mapping.entrySet()) {
-    // System.out.println(entry.getKey() + ": " + entry.getValue());
-    // }
-
+  public GameTrainDataCollector(File folder) {
     // sessionId = UUID.randomUUID().toString();
     sessionId = String.valueOf(System.currentTimeMillis());
     try {
@@ -33,10 +29,10 @@ public class GameTrainer {
     }
   }
 
-  public void saveTrainingData(GameGrid grid, KeyCode keyCode) {
+  public void saveTrainingData(GameGrid grid, Direction direction) {
     try {
       writer.append(getGridDataAsString(grid));
-      writer.append(getKeyCodeAsString(keyCode));
+      writer.append(getDirectionCodeAsString(direction));
       writer.append("\n");
       writer.flush();
     } catch (Exception e) {
@@ -63,8 +59,8 @@ public class GameTrainer {
     return sb.toString();
   }
 
-  private String getKeyCodeAsString(KeyCode key) {
-    switch (key) {
+  private String getDirectionCodeAsString(Direction direction) {
+    switch (direction) {
     case DOWN:
       return "1,0,0,0,";
     case UP:
@@ -75,6 +71,6 @@ public class GameTrainer {
       return "0,0,0,1,";
     }
 
-    throw new IllegalArgumentException("Invalid key code:" + key);
+    throw new IllegalArgumentException("Invalid direction:" + direction);
   }
 }

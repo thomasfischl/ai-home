@@ -1,4 +1,4 @@
-package com.github.thomasfischl.aihome.game2048controller;
+package com.github.thomasfischl.aihome.game2048controller.controller;
 
 import com.google.common.base.Preconditions;
 
@@ -31,6 +31,10 @@ public class GameGrid {
     Preconditions.checkArgument(col >= 0 && col < dimension);
     Preconditions.checkArgument(row >= 0 && row < dimension);
     grid[col][row] = value;
+  }
+
+  public boolean isCellValid(int col, int row) {
+    return col >= 0 && col < dimension && row >= 0 && row < dimension;
   }
 
   public int getDimension() {
@@ -68,7 +72,15 @@ public class GameGrid {
         if (j > 0) {
           sb.append("|");
         }
-        sb.append(" " + grid[j][i] + " ");
+        if (grid[j][i] > 100) {
+          sb.append(" " + grid[j][i] + " ");
+        } else if (grid[j][i] > 10) {
+          sb.append("  " + grid[j][i] + " ");
+        } else if (grid[j][i] > 0) {
+          sb.append("   " + grid[j][i] + " ");
+        } else {
+          sb.append("     ");
+        }
       }
       sb.append("|\n");
       drawLine(sb);
@@ -80,9 +92,9 @@ public class GameGrid {
   private void drawLine(StringBuffer sb) {
     sb.append("|");
     for (int i = 0; i < dimension - 1; i++) {
-      sb.append("----");
+      sb.append("------");
     }
-    sb.append("---|\n");
+    sb.append("-----|\n");
   }
 
 }

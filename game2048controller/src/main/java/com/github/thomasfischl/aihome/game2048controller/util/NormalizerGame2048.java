@@ -1,4 +1,4 @@
-package com.github.thomasfischl.aihome.brain;
+package com.github.thomasfischl.aihome.game2048controller.util;
 
 import java.util.HashMap;
 import java.util.Map;

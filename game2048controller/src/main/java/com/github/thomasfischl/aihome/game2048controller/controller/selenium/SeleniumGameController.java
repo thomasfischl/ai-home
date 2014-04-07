@@ -1,4 +1,4 @@
-package com.github.thomasfischl.aihome.game2048controller;
+package com.github.thomasfischl.aihome.game2048controller.controller.selenium;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -10,16 +10,16 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 
-public class GameController {
+import com.github.thomasfischl.aihome.game2048controller.controller.Direction;
+import com.github.thomasfischl.aihome.game2048controller.controller.GameGrid;
+import com.github.thomasfischl.aihome.game2048controller.controller.IGameController;
 
-  public enum KeyCode {
-    UP, DOWN, LEFT, RIGHT
-  }
+public class SeleniumGameController implements IGameController {
 
   private WebDriver driver;
   private String url;
 
-  public GameController(String url) {
+  public SeleniumGameController(String url) {
     System.setProperty("webdriver.chrome.driver", "./tool/chromedriver.exe");
     this.url = url;
   }
@@ -38,8 +38,8 @@ public class GameController {
     }
   }
 
-  public void fire(KeyCode key) {
-    switch (key) {
+  public void move(Direction direction) {
+    switch (direction) {
     case DOWN:
       fireEvent(Keys.ARROW_DOWN);
       break;
@@ -107,6 +107,18 @@ public class GameController {
 
   public void stop() {
     driver.close();
+  }
+
+  @Override
+  public boolean finished() {
+    // TODO Auto-generated method stub
+    return false;
+  }
+
+  @Override
+  public boolean successfulFinished() {
+    // TODO Auto-generated method stub
+    return false;
   }
 
 }
