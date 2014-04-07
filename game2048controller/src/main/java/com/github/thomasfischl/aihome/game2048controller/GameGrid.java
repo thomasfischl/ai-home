@@ -32,17 +32,40 @@ public class GameGrid {
     Preconditions.checkArgument(row >= 0 && row < dimension);
     grid[col][row] = value;
   }
-  
+
+  public int getDimension() {
+    return dimension;
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    if (obj == null)
+      return false;
+
+    GameGrid other = (GameGrid) obj;
+    if (dimension != other.dimension) {
+      return false;
+    }
+    for (int i = 0; i < dimension; i++) {
+      for (int j = 0; j < dimension; j++) {
+        if (grid[i][j] != other.grid[i][j]) {
+          return false;
+        }
+      }
+    }
+    return true;
+  }
+
   @Override
   public String toString() {
-    
+
     StringBuffer sb = new StringBuffer();
-    
+
     drawLine(sb);
     for (int i = 0; i < dimension; i++) {
       sb.append("|");
       for (int j = 0; j < dimension; j++) {
-        if(j>0){
+        if (j > 0) {
           sb.append("|");
         }
         sb.append(" " + grid[j][i] + " ");
@@ -50,17 +73,16 @@ public class GameGrid {
       sb.append("|\n");
       drawLine(sb);
     }
-  
+
     return sb.toString();
   }
 
   private void drawLine(StringBuffer sb) {
     sb.append("|");
-    for (int i = 0; i < dimension-1; i++) {
+    for (int i = 0; i < dimension - 1; i++) {
       sb.append("----");
     }
     sb.append("---|\n");
   }
-  
 
 }

@@ -17,6 +17,11 @@
 			<artifactId>selenium-chrome-driver</artifactId>
 			<version>2.5.0</version>
 		</dependency>
+		<dependency>
+			<groupId>com.github.thomasfischl.aihome.brain</groupId>
+			<artifactId>brain</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
 	</dependencies>
 
 </project>

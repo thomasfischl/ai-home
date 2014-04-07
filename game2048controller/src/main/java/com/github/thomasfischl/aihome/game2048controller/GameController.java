@@ -12,9 +12,12 @@ import org.openqa.selenium.chrome.ChromeDriver;
 
 public class GameController {
 
+  public enum KeyCode {
+    UP, DOWN, LEFT, RIGHT
+  }
+
   private WebDriver driver;
   private String url;
-  private GameGrid grid = new GameGrid(4);
 
   public GameController(String url) {
     System.setProperty("webdriver.chrome.driver", "./tool/chromedriver.exe");
@@ -35,20 +38,21 @@ public class GameController {
     }
   }
 
-  public void fireUpEvent() {
-    fireEvent(Keys.ARROW_UP);
-  }
-
-  public void fireDownEvent() {
-    fireEvent(Keys.ARROW_DOWN);
-  }
-
-  public void fireLeftEvent() {
-    fireEvent(Keys.ARROW_LEFT);
-  }
-
-  public void fireRightEvent() {
-    fireEvent(Keys.ARROW_RIGHT);
+  public void fire(KeyCode key) {
+    switch (key) {
+    case DOWN:
+      fireEvent(Keys.ARROW_DOWN);
+      break;
+    case UP:
+      fireEvent(Keys.ARROW_UP);
+      break;
+    case LEFT:
+      fireEvent(Keys.ARROW_LEFT);
+      break;
+    case RIGHT:
+      fireEvent(Keys.ARROW_RIGHT);
+      break;
+    }
   }
 
   private void fireEvent(Keys key) {
@@ -57,7 +61,7 @@ public class GameController {
   }
 
   public GameGrid getGrid() {
-    grid.clear();
+    GameGrid grid = new GameGrid(4);
 
     int errorCount = 0;
 
@@ -74,7 +78,7 @@ public class GameController {
             int val = -1;
 
             for (String part : parts) {
-//              System.out.println(part);
+              // System.out.println(part);
               if (part.startsWith("tile-position-")) {
                 col = Integer.parseInt(part.substring(14, 15));
                 row = Integer.parseInt(part.substring(16, 17));
