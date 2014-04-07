@@ -10,35 +10,33 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 
+import com.github.thomasfischl.aihome.game2048controller.controller.AbstractGameController;
 import com.github.thomasfischl.aihome.game2048controller.controller.Direction;
 import com.github.thomasfischl.aihome.game2048controller.controller.GameGrid;
-import com.github.thomasfischl.aihome.game2048controller.controller.IGameController;
 
-public class JavaGameController implements IGameController {
+public class JavaGameController extends AbstractGameController {
 
-  private static final int FINAL_VALUE_TO_WIN = 2048;
-  private static final int DEFAULT_GRID_SIZE = 4;
-
-  private int gridSize;
   private List<Location> locations = new ArrayList<>();
   private Map<Location, Tile> gameGrid;
   final Set<Tile> mergedToBeRemoved = new HashSet<>();
   private List<Integer> traversalX = new ArrayList<Integer>();
   private List<Integer> traversalY = new ArrayList<Integer>();
 
-  private boolean won = false;
+  public JavaGameController() {
+    super(4);
+  }
 
-  private void init(int gridSize) {
+  @Override
+  public void start() {
     this.gameGrid = new HashMap<>();
-    this.gridSize = gridSize;
 
-    for (int i = 0; i < gridSize; i++) {
+    for (int i = 0; i < getDimension(); i++) {
       traversalX.add(i);
       traversalY.add(i);
     }
 
-    for (int i = 0; i < gridSize; i++) {
-      for (int j = 0; j < gridSize; j++) {
+    for (int i = 0; i < getDimension(); i++) {
+      for (int j = 0; j < getDimension(); j++) {
         Location loc = new Location(i, j);
         locations.add(loc);
       }
@@ -69,19 +67,13 @@ public class JavaGameController implements IGameController {
   }
 
   @Override
-  public void start() {
-    init(DEFAULT_GRID_SIZE);
-  }
-
-  @Override
   public void stop() {
     // nothing to do
   }
 
   @Override
   public GameGrid getGrid() {
-    GameGrid grid = new GameGrid(4);
-
+    GameGrid grid = new GameGrid(getDimension());
     for (Tile tile : gameGrid.values()) {
       if (tile != null) {
         grid.setCell(tile.getLocation().getX(), tile.getLocation().getY(), tile.getValue());
@@ -89,14 +81,6 @@ public class JavaGameController implements IGameController {
     }
     return grid;
   }
-
-  // public boolean isOver() {
-  // return over;
-  // }
-  //
-  // public boolean hasWon() {
-  // return won;
-  // }
 
   @Override
   public void move(final Direction direction) {
@@ -113,7 +97,7 @@ public class JavaGameController implements IGameController {
 
         Location farthestLocation = findFarthestLocation(thisloc, direction);
         Location nextLocation = farthestLocation.offset(direction);
-        Tile tileToBeMerged = nextLocation.isValidFor(gridSize) ? gameGrid.get(nextLocation) : null;
+        Tile tileToBeMerged = nextLocation.isValidFor(getDimension()) ? gameGrid.get(nextLocation) : null;
 
         if (tileToBeMerged != null && tileToBeMerged.getValue().equals(tile.getValue()) && !tileToBeMerged.isMerged()) {
           tileToBeMerged.merge(tile);
@@ -123,9 +107,6 @@ public class JavaGameController implements IGameController {
           gameGrid.put(tile.getLocation(), null);
           mergedToBeRemoved.add(tile);
 
-          if (tileToBeMerged.getValue() == FINAL_VALUE_TO_WIN) {
-            won = true;
-          }
         } else if (farthestLocation.equals(tile.getLocation()) == false) {
           gameGrid.put(farthestLocation, tile);
           gameGrid.remove(tile.getLocation());
@@ -147,23 +128,13 @@ public class JavaGameController implements IGameController {
     }
   }
 
-  @Override
-  public boolean finished() {
-    return !findMoreMovements();
-  }
-
-  @Override
-  public boolean successfulFinished() {
-    return won;
-  }
-
   private Location findFarthestLocation(Location location, Direction direction) {
     Location farthest;
 
     do {
       farthest = location;
       location = farthest.offset(direction);
-    } while (location.isValidFor(gridSize) && gameGrid.get(location) == null);
+    } while (location.isValidFor(getDimension()) && gameGrid.get(location) == null);
 
     return farthest;
   }
@@ -186,71 +157,6 @@ public class JavaGameController implements IGameController {
         func.applyAsInt(t_x, t_y);
       }
     }
-  }
-
-  private boolean findMoreMovements() {
-    GameGrid grid = getGrid();
-
-    for (int i = 0; i < grid.getDimension(); i++) {
-      for (int j = 0; j < grid.getDimension(); j++) {
-        int val = grid.getCell(i, j);
-        if (val == 0) {
-          return true;
-        }
-
-        if (grid.isCellValid(i, j - 1) && val == grid.getCell(i, j - 1)) {
-          return true;
-        }
-        if (grid.isCellValid(i, j + 1) && val == grid.getCell(i, j + 1)) {
-          return true;
-        }
-        if (grid.isCellValid(i - 1, j) && val == grid.getCell(i - 1, j)) {
-          return true;
-        }
-        if (grid.isCellValid(i + 1, j) && val == grid.getCell(i + 1, j)) {
-          return true;
-        }
-
-      }
-    }
-
-    return false;
-
-    //
-    //
-    // int count = 0;
-    // for (Tile t : gameGrid.values()) {
-    // if (t != null) {
-    // count++;
-    // }
-    // }
-    //
-    // if (count < DEFAULT_GRID_SIZE * DEFAULT_GRID_SIZE) {
-    // return true;
-    // }
-    //
-    // for (Integer x : traversalX) {
-    // for (Integer y : traversalY) {
-    // Location thisloc = new Location(x, y);
-    // Tile tile = gameGrid.get(thisloc);
-    // if (tile == null) {
-    // continue;
-    // }
-    //
-    // for (final Direction direction : Direction.values()) {
-    // Location nextLocation = thisloc.offset(direction);
-    // if (nextLocation.isValidFor(gridSize)) {
-    // Tile tileToBeMerged = gameGrid.get(nextLocation);
-    // if (tileToBeMerged != null &&
-    // tileToBeMerged.getValue().equals(tile.getValue())) {
-    // return true;
-    // }
-    // }
-    // }
-    // }
-    //
-    // }
-    // return false;
   }
 
   private void addRandomTile() {

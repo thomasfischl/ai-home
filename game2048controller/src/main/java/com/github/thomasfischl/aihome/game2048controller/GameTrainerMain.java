@@ -7,6 +7,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import com.github.thomasfischl.aihome.brain.Brain;
 import com.github.thomasfischl.aihome.game2048controller.controller.Direction;
 import com.github.thomasfischl.aihome.game2048controller.controller.GameGrid;
+import com.github.thomasfischl.aihome.game2048controller.controller.GameState;
 import com.github.thomasfischl.aihome.game2048controller.controller.IGameController;
 import com.github.thomasfischl.aihome.game2048controller.controller.java.JavaGameController;
 import com.github.thomasfischl.aihome.game2048controller.util.NormalizerGame2048;
@@ -78,7 +79,7 @@ public class GameTrainerMain {
     public void run() {
       try {
         GameGrid lastGrid = null;
-        while (!controller.finished()) {
+        while (controller.state() == GameState.RUNNING) {
           GameGrid grid = controller.getGrid();
 
           Direction key;
@@ -101,8 +102,11 @@ public class GameTrainerMain {
           System.out.println(grid);
         }
 
-        System.out.println("Finished: " + controller.successfulFinished());
-        System.out.println(controller.getGrid());
+        GameGrid grid = controller.getGrid();
+        System.out.println("Finished:   " + controller.state());
+        System.out.println("Score:      " + grid.score());
+        System.out.println("HighNumber: " + grid.highNumber());
+        System.out.println(grid);
         pool.shutdown();
       } catch (Exception e) {
         e.printStackTrace();

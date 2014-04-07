@@ -10,16 +10,17 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 
+import com.github.thomasfischl.aihome.game2048controller.controller.AbstractGameController;
 import com.github.thomasfischl.aihome.game2048controller.controller.Direction;
 import com.github.thomasfischl.aihome.game2048controller.controller.GameGrid;
-import com.github.thomasfischl.aihome.game2048controller.controller.IGameController;
 
-public class SeleniumGameController implements IGameController {
+public class SeleniumGameController extends AbstractGameController {
 
   private WebDriver driver;
   private String url;
 
   public SeleniumGameController(String url) {
+    super(4);
     System.setProperty("webdriver.chrome.driver", "./tool/chromedriver.exe");
     this.url = url;
   }
@@ -61,8 +62,7 @@ public class SeleniumGameController implements IGameController {
   }
 
   public GameGrid getGrid() {
-    GameGrid grid = new GameGrid(4);
-
+    GameGrid grid = new GameGrid(getDimension());
     int errorCount = 0;
 
     while (errorCount < 3) {
@@ -107,18 +107,6 @@ public class SeleniumGameController implements IGameController {
 
   public void stop() {
     driver.close();
-  }
-
-  @Override
-  public boolean finished() {
-    // TODO Auto-generated method stub
-    return false;
-  }
-
-  @Override
-  public boolean successfulFinished() {
-    // TODO Auto-generated method stub
-    return false;
   }
 
 }

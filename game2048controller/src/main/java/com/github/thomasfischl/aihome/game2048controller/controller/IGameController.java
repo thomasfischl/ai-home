@@ -9,9 +9,7 @@ public interface IGameController {
   GameGrid getGrid();
 
   void move(Direction direction);
-  
-  boolean finished();
-  
-  boolean successfulFinished();
+
+  GameState state();
 
 }

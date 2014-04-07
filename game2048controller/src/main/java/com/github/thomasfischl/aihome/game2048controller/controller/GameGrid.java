@@ -41,6 +41,26 @@ public class GameGrid {
     return dimension;
   }
 
+  public int score() {
+    int score = 0;
+    for (int i = 0; i < dimension; i++) {
+      for (int j = 0; j < dimension; j++) {
+        score += grid[i][j];
+      }
+    }
+    return score;
+  }
+
+  public int highNumber() {
+    int highNumber = 0;
+    for (int i = 0; i < dimension; i++) {
+      for (int j = 0; j < dimension; j++) {
+        highNumber = Math.max(grid[i][j], highNumber);
+      }
+    }
+    return highNumber;
+  }
+
   @Override
   public boolean equals(Object obj) {
     if (obj == null)
