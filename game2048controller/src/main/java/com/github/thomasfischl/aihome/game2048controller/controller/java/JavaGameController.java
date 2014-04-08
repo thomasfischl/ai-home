@@ -3,12 +3,10 @@ package com.github.thomasfischl.aihome.game2048controller.controller.java;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
-import java.util.Set;
 
 import com.github.thomasfischl.aihome.game2048controller.controller.AbstractGameController;
 import com.github.thomasfischl.aihome.game2048controller.controller.Direction;
@@ -18,7 +16,6 @@ public class JavaGameController extends AbstractGameController {
 
   private List<Location> locations = new ArrayList<>();
   private Map<Location, Tile> gameGrid;
-  final Set<Tile> mergedToBeRemoved = new HashSet<>();
   private List<Integer> traversalX = new ArrayList<Integer>();
   private List<Integer> traversalY = new ArrayList<Integer>();
 
@@ -101,12 +98,9 @@ public class JavaGameController extends AbstractGameController {
 
         if (tileToBeMerged != null && tileToBeMerged.getValue().equals(tile.getValue()) && !tileToBeMerged.isMerged()) {
           tileToBeMerged.merge(tile);
-
           gameGrid.put(nextLocation, tileToBeMerged);
           gameGrid.remove(tile.getLocation());
           gameGrid.put(tile.getLocation(), null);
-          mergedToBeRemoved.add(tile);
-
         } else if (farthestLocation.equals(tile.getLocation()) == false) {
           gameGrid.put(farthestLocation, tile);
           gameGrid.remove(tile.getLocation());
@@ -118,8 +112,6 @@ public class JavaGameController extends AbstractGameController {
     });
 
     addRandomTile();
-
-    mergedToBeRemoved.clear();
 
     for (Tile t : gameGrid.values()) {
       if (t != null) {

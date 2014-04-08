@@ -130,30 +130,18 @@ public class GameGridConverter {
 
     boolean found = false;
     for (int row = 0; row < grid.getDimension(); row++) {
+      if (grid.getCell(grid.getDimension() - 1, row) != 0) {
+        continue;
+      }
       for (int col = 0; col < grid.getDimension(); col++) {
-        if (grid.getCell(col, row) == 0) {
+        int val = grid.getCell(col, row);
+        if (val == 0) {
           continue;
         }
-        if (!grid.isCellValid(col + 1, row + 1)) {
-          continue;
-        }
-        if (grid.getCell(col, row) == grid.getCell(col + 1, row + 1)) {
+        if (grid.isCellValid(col + 1, row + 1) && val == grid.getCell(col + 1, row + 1)) {
           found = true;
         }
-      }
-    }
-    // result[8] = found ? 1 : 0;
-
-    // found = false;
-    for (int row = 0; row < grid.getDimension(); row++) {
-      for (int col = 0; col < grid.getDimension(); col++) {
-        if (grid.getCell(col, row) == 0) {
-          continue;
-        }
-        if (!grid.isCellValid(col + 1, row - 1)) {
-          continue;
-        }
-        if (grid.getCell(col, row) == grid.getCell(col + 1, row - 1)) {
+        if (grid.isCellValid(col + 1, row - 1) && val == grid.getCell(col + 1, row - 1)) {
           found = true;
         }
       }

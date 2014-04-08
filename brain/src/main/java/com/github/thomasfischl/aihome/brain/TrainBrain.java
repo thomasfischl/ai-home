@@ -14,12 +14,16 @@ import org.encog.persist.EncogDirectoryPersistence;
 
 public class TrainBrain {
 
+  private File folder = new File("./network");
+
   public void train(MLDataSet trainData, int inputNeurons, int outputNeurons) {
+    folder.mkdirs();
+
     // create a neural network, without using a factory
     BasicNetwork network = new BasicNetwork();
     network.addLayer(new BasicLayer(null, true, inputNeurons));
     network.addLayer(new BasicLayer(new ActivationSigmoid(), true, 32));
-     network.addLayer(new BasicLayer(new ActivationSigmoid(), true, 32));
+    network.addLayer(new BasicLayer(new ActivationSigmoid(), true, 32));
     // network.addLayer(new BasicLayer(new ActivationSigmoid(), true, 32));
     network.addLayer(new BasicLayer(new ActivationSigmoid(), false, outputNeurons));
     network.getStructure().finalizeStructure();
@@ -52,7 +56,7 @@ public class TrainBrain {
     double e = network.calculateError(trainData);
     System.out.println("Network trained to error: " + (e * 100));
 
-    EncogDirectoryPersistence.saveObject(new File("./network/nn.eg"), network);
+    EncogDirectoryPersistence.saveObject(new File(folder, "nn.eg"), network);
 
     Encog.getInstance().shutdown();
   }
