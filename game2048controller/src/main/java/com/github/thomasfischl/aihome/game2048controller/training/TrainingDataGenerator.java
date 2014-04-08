@@ -5,6 +5,9 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.io.IOException;
+
+import com.github.thomasfischl.aihome.game2048controller.controller.GameGrid;
 
 public class TrainingDataGenerator {
 
@@ -33,10 +36,9 @@ public class TrainingDataGenerator {
 
         try (BufferedReader br = new BufferedReader(new FileReader(f))) {
           br.readLine(); // skip header
-
           String line;
           while ((line = br.readLine()) != null) {
-            writer.append(line).append("\n");
+            processLine(line);
             lineCount++;
           }
         }
@@ -45,6 +47,17 @@ public class TrainingDataGenerator {
     }
 
     writer.close();
+  }
+
+  // private GameGrid lastGrid;
+  // private int merged = 0;
+  
+  private void processLine(String line) throws IOException {
+    TrainingData data = new TrainingData(line, 4);
+    System.out.println(data.getGrid().score());
+    System.out.println(data.getGrid().highNumber());
+
+    writer.append(line).append("\n");
   }
 
   public static void main(String[] args) throws Exception {

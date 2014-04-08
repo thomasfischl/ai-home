@@ -12,7 +12,7 @@ import javax.swing.SwingUtilities;
 import com.github.thomasfischl.aihome.game2048controller.controller.Direction;
 import com.github.thomasfischl.aihome.game2048controller.controller.GameGrid;
 import com.github.thomasfischl.aihome.game2048controller.controller.IGameController;
-import com.github.thomasfischl.aihome.game2048controller.controller.selenium.SeleniumGameController;
+import com.github.thomasfischl.aihome.game2048controller.controller.java.JavaGameController;
 import com.github.thomasfischl.aihome.game2048controller.training.TrainingDataCollector;
 
 public class GameControllerMain {
@@ -21,11 +21,11 @@ public class GameControllerMain {
   private static TrainingDataCollector trainer;
 
   public static void main(String[] args) {
-    trainer = new TrainingDataCollector(new File("./traindata"));
+    trainer = new TrainingDataCollector(new File("./traindata/manuel"));
     trainer.start();
 
-    // controller = new JavaGameController();
-    controller = new SeleniumGameController("http://gabrielecirulli.github.io/2048/");
+    controller = new JavaGameController();
+    // controller = new SeleniumGameController("http://gabrielecirulli.github.io/2048/");
     controller.start();
 
     SwingUtilities.invokeLater(new Runnable() {

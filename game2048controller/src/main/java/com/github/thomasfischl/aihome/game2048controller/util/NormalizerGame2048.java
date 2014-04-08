@@ -13,6 +13,10 @@ public class NormalizerGame2048 {
     for (int i = 0; i < 12; i++) {
       mapping.put((int) Math.pow(2, i), (1.0 / 13.0) * (i + 1));
     }
+
+    // for (Entry<Integer, Double> entry : mapping.entrySet()) {
+    // System.out.println(entry.getKey() + ": " + entry.getValue());
+    // }
   }
 
   public double map(int val) {

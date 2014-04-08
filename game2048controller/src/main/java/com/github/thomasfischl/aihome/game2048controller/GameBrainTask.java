@@ -1,17 +1,17 @@
 package com.github.thomasfischl.aihome.game2048controller;
 
 import java.util.Random;
+import java.util.concurrent.Callable;
 
 import com.github.thomasfischl.aihome.brain.Brain;
 import com.github.thomasfischl.aihome.game2048controller.controller.Direction;
 import com.github.thomasfischl.aihome.game2048controller.controller.GameGrid;
 import com.github.thomasfischl.aihome.game2048controller.controller.GameState;
 import com.github.thomasfischl.aihome.game2048controller.controller.IGameController;
-import com.github.thomasfischl.aihome.game2048controller.util.NormalizerGame2048;
+import com.github.thomasfischl.aihome.game2048controller.util.GameGridConverter;
 
-public class GameBrainTask implements Runnable {
+public class GameBrainTask implements Callable<GameGrid> {
 
-  private static NormalizerGame2048 normalizer = new NormalizerGame2048();
   private Random rand = new Random();
   private IGameController controller;
   private Brain brain;
@@ -26,7 +26,7 @@ public class GameBrainTask implements Runnable {
   }
 
   @Override
-  public void run() {
+  public GameGrid call() {
     try {
       start();
       GameGrid lastGrid = null;
@@ -34,11 +34,14 @@ public class GameBrainTask implements Runnable {
         GameGrid grid = controller.getGrid();
         move(lastGrid, grid);
         lastGrid = grid;
-        try {
-          Thread.sleep(thinkTime);
-        } catch (InterruptedException e) {
-          e.printStackTrace();
-          break;
+
+        if (thinkTime != 0) {
+          try {
+            Thread.sleep(thinkTime);
+          } catch (InterruptedException e) {
+            e.printStackTrace();
+            break;
+          }
         }
 
         log(grid.toString());
@@ -49,6 +52,8 @@ public class GameBrainTask implements Runnable {
     } catch (Exception e) {
       e.printStackTrace();
     }
+
+    return controller.getGrid();
   }
 
   protected void start() {
@@ -90,17 +95,9 @@ public class GameBrainTask implements Runnable {
   }
 
   protected Direction calculateBrainNextStep(GameGrid grid) {
-
-    double[] data = new double[16];
-    int idx = 0;
-    for (int i = 0; i < grid.getDimension(); i++) {
-      for (int j = 0; j < grid.getDimension(); j++) {
-        double val = normalizer.map(grid.getCell(j, i));
-        data[idx++] = val;
-      }
-    }
-
-    double[] result = brain.compute(data);
+    // double[] result = brain.compute(GameGridConverter.asGridArray(grid));
+    double[] result = brain.compute(GameGridConverter.transform(grid));
+    // double[] result = brain.compute(GameGridConverter.asFullArray(grid));
 
     double max = -1;
     Direction key = Direction.LEFT;
