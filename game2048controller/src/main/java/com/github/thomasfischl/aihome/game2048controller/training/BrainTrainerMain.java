@@ -3,10 +3,12 @@ package com.github.thomasfischl.aihome.game2048controller.training;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.util.ArrayList;
+import java.util.List;
 
-import org.encog.ml.data.MLDataSet;
+import org.encog.ml.data.MLDataPair;
 import org.encog.ml.data.basic.BasicMLData;
-import org.encog.ml.data.basic.BasicMLDataSet;
+import org.encog.ml.data.basic.BasicMLDataPair;
 
 import com.github.thomasfischl.aihome.brain.TrainBrain;
 import com.github.thomasfischl.aihome.game2048controller.util.GameGridConverter;
@@ -19,8 +21,8 @@ public class BrainTrainerMain {
     this.folder = folder;
   }
 
-  public MLDataSet loadTrainingData() throws Exception {
-    MLDataSet set = new BasicMLDataSet();
+  public List<MLDataPair> loadTrainingData() throws Exception {
+    List<MLDataPair> data = new ArrayList<MLDataPair>();
     int lineCount = 0;
 
     for (File f : folder.listFiles()) {
@@ -37,24 +39,24 @@ public class BrainTrainerMain {
             if (line.isEmpty()) {
               continue;
             }
-            processTrainingData(set, line);
+            data.add(processTrainingData(line));
             lineCount++;
           }
         }
-
       }
     }
 
-    return set;
+    return data;
   }
 
   private void generate() throws Exception {
-    MLDataSet data = loadTrainingData();
+    List<MLDataPair> data = loadTrainingData();
+
     TrainBrain trainer = new TrainBrain();
-    trainer.train(data, 9, 4);
+    trainer.advancedTraining(data, 0.7, 1, 6000);
   }
 
-  private void processTrainingData(MLDataSet set, String line) {
+  private MLDataPair processTrainingData(String line) {
     TrainingData data = new TrainingData(line, 4);
 
     // -------
@@ -74,25 +76,21 @@ public class BrainTrainerMain {
     // e.printStackTrace();
     // }
 
-    boolean empty = true;
-    for (double val : result) {
-      if (val > 0) {
-        empty = false;
-      }
-    }
-    if (empty) {
-      return;
-    }
+    // boolean empty = true;
+    // for (double val : result) {
+    // if (val > 0) {
+    // empty = false;
+    // }
+    // }
+    // if (empty) {
+    // return;
+    // }
 
     // -------
 
-    // BasicMLData inputData = new BasicMLData(result);
-    // BasicMLData inputData = new BasicMLData(GameGridConverter.asGridArray(data.getGrid()));
     BasicMLData inputData = new BasicMLData(GameGridConverter.transform(data.getGrid()));
-    // BasicMLData inputData = new BasicMLData(GameGridConverter.asFullArray(data.getGrid()));
     BasicMLData idealData = new BasicMLData(data.getDirection().asDoubleArray());
-    set.add(inputData, idealData);
-
+    return new BasicMLDataPair(inputData, idealData);
   }
 
   public static void main(String[] args) throws Exception {

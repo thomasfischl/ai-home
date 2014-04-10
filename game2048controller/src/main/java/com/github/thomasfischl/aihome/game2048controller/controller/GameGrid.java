@@ -117,4 +117,16 @@ public class GameGrid {
     sb.append("-----|\n");
   }
 
+  public GameGrid copy() {
+    GameGrid result = new GameGrid(dimension);
+
+    for (int i = 0; i < dimension; i++) {
+      for (int j = 0; j < dimension; j++) {
+        result.grid[i][j] = grid[i][j];
+      }
+    }
+
+    return result;
+  }
+
 }

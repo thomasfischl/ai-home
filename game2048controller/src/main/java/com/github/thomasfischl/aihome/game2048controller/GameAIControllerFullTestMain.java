@@ -17,13 +17,14 @@ import com.github.thomasfischl.aihome.game2048controller.controller.java.JavaGam
 
 public class GameAIControllerFullTestMain {
 
+  private static final int ITERATION_COUNT = 1000;
   private static ExecutorService pool;
 
   public static void main(String[] args) throws Exception {
     pool = Executors.newFixedThreadPool(10);
 
     List<Future<GameGrid>> results = new ArrayList<>();
-    for (int i = 0; i < 1000; i++) {
+    for (int i = 0; i < ITERATION_COUNT; i++) {
       Brain brain = new Brain();
       IGameController controller = new JavaGameController();
       controller.start();
@@ -35,6 +36,7 @@ public class GameAIControllerFullTestMain {
       results.add(result);
     }
 
+    int score = 0;
     int count = 0;
     Map<Integer, AtomicInteger> historgram = new HashMap<Integer, AtomicInteger>();
     for (Future<GameGrid> result : results) {
@@ -44,7 +46,7 @@ public class GameAIControllerFullTestMain {
         historgram.get(result.get().highNumber()).incrementAndGet();
       }
       count++;
-
+      score += result.get().score();
       if (count % 100 == 0) {
         System.out.println("Count: " + count);
       }
@@ -55,6 +57,7 @@ public class GameAIControllerFullTestMain {
     for (Integer key : keys) {
       System.out.println(key + ": " + historgram.get(key).intValue());
     }
+    System.out.println("Score: " + (score / count));
 
     pool.shutdown();
   }
