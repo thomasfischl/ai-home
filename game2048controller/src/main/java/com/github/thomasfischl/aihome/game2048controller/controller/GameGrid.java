@@ -7,6 +7,11 @@ public class GameGrid {
   private int[][] grid;
   private int dimension;
 
+  public GameGrid(int dimension, int[][] grid) {
+    this(dimension);
+    this.grid = grid;
+  }
+
   public GameGrid(int dimension) {
     this.dimension = dimension;
     grid = new int[dimension][dimension];

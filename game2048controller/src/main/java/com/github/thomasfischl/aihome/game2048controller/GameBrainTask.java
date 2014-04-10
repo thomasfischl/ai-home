@@ -1,6 +1,5 @@
 package com.github.thomasfischl.aihome.game2048controller;
 
-import java.util.Random;
 import java.util.concurrent.Callable;
 
 import com.github.thomasfischl.aihome.brain.Brain;
@@ -12,11 +11,11 @@ import com.github.thomasfischl.aihome.game2048controller.util.GameGridConverter;
 
 public class GameBrainTask implements Callable<GameGrid> {
 
-  private Random rand = new Random();
   private IGameController controller;
   private Brain brain;
   private long thinkTime;
   private boolean log;
+  private int unkownState;
 
   public GameBrainTask(IGameController controller, Brain brain, long thinkTime, boolean log) {
     this.controller = controller;
@@ -32,6 +31,7 @@ public class GameBrainTask implements Callable<GameGrid> {
       GameGrid lastGrid = null;
       while (controller.state() == GameState.RUNNING) {
         GameGrid grid = controller.getGrid();
+        log(grid.toString());
         move(lastGrid, grid);
         lastGrid = grid;
 
@@ -44,7 +44,6 @@ public class GameBrainTask implements Callable<GameGrid> {
           }
         }
 
-        log(grid.toString());
       }
 
       reportResult();
@@ -86,9 +85,24 @@ public class GameBrainTask implements Callable<GameGrid> {
   protected Direction calculateNextStep(GameGrid lastGrid, GameGrid grid) {
     Direction key;
     if (grid.equals(lastGrid)) {
-      key = Direction.values()[rand.nextInt(4)];
-      log("Random move");
+      switch (unkownState) {
+      case 0:
+        key = Direction.DOWN;
+        break;
+      case 1:
+        key = Direction.RIGHT;
+        break;
+      case 2:
+        key = Direction.LEFT;
+        break;
+      default:
+        key = Direction.UP;
+      }
+      // key = Direction.values()[rand.nextInt(4)];
+      log("Random move: " + key);
+      unkownState++;
     } else {
+      unkownState = 0;
       key = calculateBrainNextStep(grid);
     }
     return key;

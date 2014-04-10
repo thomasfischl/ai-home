@@ -16,7 +16,7 @@ import org.encog.persist.EncogDirectoryPersistence;
 
 public class TrainBrain {
 
-  private File folder = new File("./network");
+  private BasicNetwork network;
 
   public BasicNetwork createNetwork(MLDataPair data) {
     return createNetwork(data.getInput().size(), data.getIdeal().size());
@@ -27,7 +27,7 @@ public class TrainBrain {
     BasicNetwork network = new BasicNetwork();
     network.addLayer(new BasicLayer(null, true, inputNeurons));
     network.addLayer(new BasicLayer(new ActivationSigmoid(), true, 32));
-    network.addLayer(new BasicLayer(new ActivationSigmoid(), true, 64));
+    network.addLayer(new BasicLayer(new ActivationSigmoid(), true, 32));
     network.addLayer(new BasicLayer(new ActivationSigmoid(), true, 32));
     // network.addLayer(new BasicLayer(new ActivationSigmoid(), true, 32));
     network.addLayer(new BasicLayer(new ActivationSigmoid(), false, outputNeurons));
@@ -37,7 +37,7 @@ public class TrainBrain {
   }
 
   public void advancedTraining(List<MLDataPair> data, final double ratio, final int retry, final int maxEpoch) {
-    BasicNetwork network = createNetwork(data.get(0));
+    network = createNetwork(data.get(0));
 
     int retryCount = 0;
     while (retryCount < retry) {
@@ -58,7 +58,6 @@ public class TrainBrain {
       network = training(network, trainData, testData, maxEpoch);
       retryCount++;
     }
-    saveNetwork(network);
   }
 
   private BasicNetwork training(BasicNetwork network, MLDataSet trainData, MLDataSet testData, int maxEpoch) {
@@ -92,9 +91,8 @@ public class TrainBrain {
     return network;
   }
 
-  private void saveNetwork(BasicNetwork network) {
-    folder.mkdirs();
-    File networkFile = new File(folder, "nn.eg");
+  public void saveNetwork(File networkFile) {
+    networkFile.getParentFile().mkdirs();
     if (networkFile.exists()) {
       networkFile.delete();
     }

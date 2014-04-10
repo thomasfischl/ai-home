@@ -13,7 +13,7 @@ public class Brain {
     // network = (BasicNetwork) EncogDirectoryPersistence.loadResourceObject("nn16-32-64-32-16-4.eg");
     // network = (BasicNetwork) EncogDirectoryPersistence.loadResourceObject("nn16-64-64-4.eg");
     // network = (BasicNetwork) EncogDirectoryPersistence.loadResourceObject("simple.eg");
-    network = (BasicNetwork) EncogDirectoryPersistence.loadResourceObject("nn.eg");
+    network = (BasicNetwork) EncogDirectoryPersistence.loadResourceObject("trainNetwork.eg");
   }
 
   public double[] compute(double[] value) {

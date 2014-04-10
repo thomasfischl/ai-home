@@ -31,7 +31,7 @@ public class BrainTrainerMain {
       }
 
       if (f.getName().endsWith(".tdata")) {
-
+        System.out.println("Read training data from file : " + f.getName());
         try (BufferedReader br = new BufferedReader(new FileReader(f))) {
           br.readLine(); // skip header
           String line;
@@ -54,19 +54,20 @@ public class BrainTrainerMain {
 
     TrainBrain trainer = new TrainBrain();
     trainer.advancedTraining(data, 0.7, 1, 6000);
+    trainer.saveNetwork(new File("./src/main/resources/trainNetwork.eg"));
   }
 
   private MLDataPair processTrainingData(String line) {
     TrainingData data = new TrainingData(line, 4);
 
     // -------
-    System.out.println(data.getGrid());
-    System.out.println(data.getDirection());
-    double[] result = GameGridConverter.transform(data.getGrid());
-    for (double val : result) {
-      System.out.print(val + " - ");
-    }
-    System.out.println();
+    // System.out.println(data.getGrid());
+    // System.out.println(data.getDirection());
+    // double[] result = GameGridConverter.transform(data.getGrid());
+    // for (double val : result) {
+    // System.out.print(val + " - ");
+    // }
+    // System.out.println();
 
     // try {
     // while (System.in.read() != 13)
@@ -94,8 +95,7 @@ public class BrainTrainerMain {
   }
 
   public static void main(String[] args) throws Exception {
-    // BrainTrainerMain generator = new BrainTrainerMain(new File("./traindata"));
-    BrainTrainerMain generator = new BrainTrainerMain(new File("./traindata/manuel"));
+    BrainTrainerMain generator = new BrainTrainerMain(new File("./traindata/training"));
     generator.generate();
   }
 
