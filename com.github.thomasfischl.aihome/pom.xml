@@ -1,0 +1,13 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.github.thomasfischl.aihome</groupId>
+  <artifactId>com.github.thomasfischl.aihome</artifactId>
+  <version>0.0.1</version>
+  <name>AI-Home</name>
+  <packaging>pom</packaging>
+  <modules>
+    <module>../com.github.thomasfischl.aihome.communication</module>
+    <module>../com.github.thomasfischl.aihome.controller</module>
+    <module>../com.github.thomasfischl.aihome.server</module>
+  </modules>
+</project>
