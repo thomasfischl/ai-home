@@ -3,13 +3,13 @@
 
   <groupId>com.github.thomasfischl.aihome.communication</groupId>
   <artifactId>com.github.thomasfischl.aihome.communication</artifactId>
-  <version>0.0.1</version>
- 
-<!--   <parent> -->
-<!--     <groupId>com.github.thomasfischl.aihome</groupId> -->
-<!--     <artifactId>com.github.thomasfischl.aihome</artifactId> -->
-<!--     <version>0.0.1</version> -->
-<!--   </parent> -->
+  
+  <parent>
+    <groupId>com.github.thomasfischl.aihome</groupId>
+    <artifactId>com.github.thomasfischl.aihome</artifactId>
+    <version>0.0.1</version>
+    <relativePath>../com.github.thomasfischl.aihome/pom.xml</relativePath>
+  </parent>
 
   <dependencies>
     <dependency>
@@ -32,4 +32,5 @@
   </build>
 
   <name>AI-Home Communication</name>
+
 </project>

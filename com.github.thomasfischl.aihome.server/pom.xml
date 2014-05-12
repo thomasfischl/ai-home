@@ -3,8 +3,14 @@
 
   <groupId>com.github.thomasfischl.aihome.server</groupId>
   <artifactId>aihome.server</artifactId>
-  <version>0.0.1</version>
 
+  <parent>
+    <groupId>com.github.thomasfischl.aihome</groupId>
+    <artifactId>com.github.thomasfischl.aihome</artifactId>
+    <version>0.0.1</version>
+    <relativePath>../com.github.thomasfischl.aihome/pom.xml</relativePath>
+  </parent>
+  
   <properties>
     <org.springframework-version>4.0.0.RELEASE</org.springframework-version>
     <org.slf4j-version>1.7.5</org.slf4j-version>

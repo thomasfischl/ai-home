@@ -4,7 +4,13 @@
 
   <groupId>com.github.thomasfischl.aihome.controller</groupId>
   <artifactId>aihome.controller</artifactId>
-  <version>0.0.1</version>
+
+  <parent>
+    <groupId>com.github.thomasfischl.aihome</groupId>
+    <artifactId>com.github.thomasfischl.aihome</artifactId>
+    <version>0.0.1</version>
+    <relativePath>../com.github.thomasfischl.aihome/pom.xml</relativePath>
+  </parent>
 
   <properties>
     <org.springframework-version>4.0.4.RELEASE</org.springframework-version>
@@ -85,6 +91,12 @@
       <groupId>com.github.thomasfischl.aihome.communication</groupId>
       <artifactId>com.github.thomasfischl.aihome.communication</artifactId>
       <version>0.0.1</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.pi4j</groupId>
+      <artifactId>pi4j-core</artifactId>
+      <version>0.0.5</version>
     </dependency>
   </dependencies>
 
