@@ -25,7 +25,9 @@ public class RestClientService {
   @PostConstruct
   public void init() throws IOException {
     System.out.println("Open sensordata file ...");
-    fw = new FileWriter(new File("./sensorData/data.txt"));
+    File tmpData = new File("./sensorData/data.txt");
+	tmpData.getParentFile().mkdirs();
+    fw = new FileWriter(tmpData);
   }
 
   @PreDestroy

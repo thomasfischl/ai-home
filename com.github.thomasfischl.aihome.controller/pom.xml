@@ -93,11 +93,11 @@
       <version>0.0.1</version>
     </dependency>
 
-    <dependency>
-      <groupId>com.pi4j</groupId>
-      <artifactId>pi4j-core</artifactId>
-      <version>0.0.5</version>
-    </dependency>
+    <!-- <dependency> -->
+    <!-- <groupId>com.pi4j</groupId> -->
+    <!-- <artifactId>pi4j-core</artifactId> -->
+    <!-- <version>0.0.5</version> -->
+    <!-- </dependency> -->
   </dependencies>
 
   <build>
@@ -111,22 +111,33 @@
       </plugin>
 
       <plugin>
-        <artifactId>maven-assembly-plugin</artifactId>
-        <version>2.4</version>
-        <configuration>
-          <descriptorRefs>
-            <descriptorRef>jar-with-dependencies</descriptorRef>
-          </descriptorRefs>
-          <archive>
-            <manifest>
-              <mainClass>com.github.thomasfischl.aihome.controller.Application</mainClass>
-            </manifest>
-          </archive>
-        </configuration>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-shade-plugin</artifactId>
+        <version>2.0</version>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>shade</goal>
+            </goals>
+            <configuration>
+              <transformers>
+                <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
+                  <resource>META-INF/spring.handlers</resource>
+                </transformer>
+                <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
+                  <resource>META-INF/spring.schemas</resource>
+                </transformer>
+                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                  <mainClass>com.github.thomasfischl.aihome.controller.Application</mainClass>
+                </transformer>
+              </transformers>
+            </configuration>
+          </execution>
+        </executions>
       </plugin>
     </plugins>
   </build>
-
 
   <url>https://github.com/thomasfischl/ai-home</url>
   <name>AI-Home Controller</name>
