@@ -1,0 +1,18 @@
+#install bluetooth tools
+
+apt-get update
+apt-get install bluetooth
+
+
+#show all bluetooth dongles
+hcitool dev
+
+#enable dongle
+hciconfig hci0 up
+
+#search for remote devices
+hcitool scan --flush
+
+#request information for remote device
+sudo hcitool info BC:F5:AC:9C:4D:8A
+ 

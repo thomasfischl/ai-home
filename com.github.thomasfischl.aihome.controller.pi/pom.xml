@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>com.github.thomasfischl.aihome.controller.pi</groupId>
+  <artifactId>aihome.controller.pi</artifactId>
+
+  <parent>
+    <groupId>com.github.thomasfischl.aihome</groupId>
+    <artifactId>com.github.thomasfischl.aihome</artifactId>
+    <version>0.0.1</version>
+    <relativePath>../com.github.thomasfischl.aihome/pom.xml</relativePath>
+  </parent>
+
+  <properties>
+    <org.slf4j-version>1.7.5</org.slf4j-version>
+    <logback.version>1.1.2</logback.version>
+  </properties>
+
+  <developers>
+    <developer>
+      <email>fischl.thomas@gmail.com</email>
+      <name>Thomas Fischl</name>
+    </developer>
+  </developers>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-log4j12</artifactId>
+      <version>${org.slf4j-version}</version>
+      <scope>runtime</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>ch.qos.logback</groupId>
+      <artifactId>logback-classic</artifactId>
+      <version>${logback.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>javax.inject</groupId>
+      <artifactId>javax.inject</artifactId>
+      <version>1</version>
+    </dependency>
+    <dependency>
+      <groupId>com.pi4j</groupId>
+      <artifactId>pi4j-core</artifactId>
+      <version>0.0.5</version>
+      <exclusions>
+        <exclusion>
+          <groupId>com.pi4j</groupId>
+          <artifactId>pi4j-native</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <source>1.7</source>
+          <target>1.7</target>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <artifactId>maven-assembly-plugin</artifactId>
+        <version>2.4</version>
+        <configuration>
+          <archive>
+            <manifest>
+              <mainClass>com.github.thomasfischl.aihome.controller.pi.LedBlinkTest</mainClass>
+            </manifest>
+          </archive>
+          <descriptorRefs>
+            <descriptorRef>jar-with-dependencies</descriptorRef>
+          </descriptorRefs>
+        </configuration>
+      </plugin>
+
+      <!-- <plugin> -->
+      <!-- <groupId>org.apache.maven.plugins</groupId> -->
+      <!-- <artifactId>maven-jar-plugin</artifactId> -->
+      <!-- <configuration> -->
+      <!-- <archive> -->
+      <!-- <manifest> -->
+      <!-- <addClasspath>true</addClasspath> -->
+      <!-- <classpathPrefix>lib/</classpathPrefix> -->
+      <!-- <mainClass>theMainClass</mainClass> -->
+      <!-- <mainClass>com.github.thomasfischl.aihome.controller.pi.LedBlinkTest</mainClass> -->
+      <!-- </manifest> -->
+      <!-- </archive> -->
+      <!-- </configuration> -->
+      <!-- </plugin> -->
+
+    </plugins>
+  </build>
+
+  <url>https://github.com/thomasfischl/ai-home</url>
+  <name>AI-Home Controller</name>
+</project>
