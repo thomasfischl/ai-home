@@ -1,5 +1,11 @@
 package com.github.thomasfischl.aihome.controller.pi;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.commons.io.IOUtils;
+
 import com.pi4j.io.gpio.GpioController;
 import com.pi4j.io.gpio.GpioFactory;
 import com.pi4j.io.gpio.GpioPinDigitalInput;
@@ -12,8 +18,30 @@ import com.pi4j.io.gpio.event.GpioPinListenerDigital;
 
 public class LedBlinkTest {
 
+  public static List<String> getAllBluetoothDevices() throws IOException, InterruptedException {
+    List<String> devices = new ArrayList<>();
+    Process p = Runtime.getRuntime().exec(new String[] { "bash", "-c", "hcitool scan --flush" });
+    p.waitFor();
+
+    List<String> data = IOUtils.readLines(p.getInputStream());
+    if (data != null) {
+      for (String line : data) {
+        line = line.trim();
+        if (line.charAt(2) == ':') {
+          devices.add(line.substring(0, 17));
+        }
+      }
+    }
+
+    return devices;
+  }
+
   public static void main(String[] args) throws Exception {
     System.out.println("<--Pi4J--> GPIO Control Example ... started.");
+
+    for (String dev : getAllBluetoothDevices()) {
+      System.out.println("Device: " + dev);
+    }
 
     final GpioController gpio = GpioFactory.getInstance();
     final GpioPinDigitalOutput ledPin1 = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_00, "Led01 (green)", PinState.LOW);
