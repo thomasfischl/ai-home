@@ -56,9 +56,7 @@ public class TrainBrain {
         }
       }
       network = training(network, trainData, testData, maxEpoch);
-      retryCount++;
-      
-      //hallo
+      retryCount++; 
     }
   }
 
