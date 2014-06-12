@@ -23,11 +23,9 @@ public class SensorAggregatorService implements Runnable {
     } else {
       values.put(key, data);
     }
-
   }
 
   public SensorDataGroup send() {
-    System.out.println("send group");
     return new SensorDataGroup(values.values());
   }
 

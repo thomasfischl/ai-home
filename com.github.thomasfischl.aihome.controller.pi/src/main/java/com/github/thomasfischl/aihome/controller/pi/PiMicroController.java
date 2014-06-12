@@ -18,6 +18,8 @@ import com.pi4j.io.gpio.event.GpioPinListenerDigital;
 
 public class PiMicroController {
 
+  private static PiMicroController singleton;
+
   private GpioController gpioController;
   private GpioPinDigitalOutput greenLed;
   private GpioPinDigitalOutput yellowLed;
@@ -31,7 +33,7 @@ public class PiMicroController {
   private boolean relayState;
   private boolean buttonPressed;
 
-  public PiMicroController() {
+  private PiMicroController() {
     gpioController = GpioFactory.getInstance();
     greenLed = gpioController.provisionDigitalOutputPin(RaspiPin.GPIO_00, "Led01 (green)", PinState.LOW);
     yellowLed = gpioController.provisionDigitalOutputPin(RaspiPin.GPIO_02, "Led02 (yellow)", PinState.LOW);
@@ -116,6 +118,13 @@ public class PiMicroController {
   public void setRelayState(boolean state) {
     relayState = state;
     relay.setState(relayState);
+  }
+
+  public static PiMicroController getInstance() {
+    if (singleton == null) {
+      singleton = new PiMicroController();
+    }
+    return singleton;
   }
 
 }

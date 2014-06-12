@@ -6,14 +6,14 @@ public class SensorData {
 
   private String value;
 
-  private String type;
+  private SensorDataType type;
 
   private long time;
 
   public SensorData() {
   }
 
-  public SensorData(String name, String value, String type, long time) {
+  public SensorData(String name, String value, SensorDataType type, long time) {
     super();
     this.name = name;
     this.value = value;
@@ -29,7 +29,7 @@ public class SensorData {
     return time;
   }
 
-  public String getType() {
+  public SensorDataType getType() {
     return type;
   }
 

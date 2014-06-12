@@ -9,7 +9,7 @@ public class PiMicroControllerTest {
   public static void main(String[] args) throws Exception {
     System.out.println("<--Pi4J--> GPIO Control Example ... started.");
 
-    final PiMicroController controller = new PiMicroController();
+    final PiMicroController controller = PiMicroController.getInstance();
 
     for (BluetoothDevice dev : controller.getAllBluetoothDevices()) {
       System.out.println("Device: " + dev);
@@ -39,14 +39,14 @@ public class PiMicroControllerTest {
             controller.setYellowLedState(true);
             controller.setRedLedState(true);
             break;
-            
+
           default:
             controller.setGreenLedState(false);
             controller.setYellowLedState(false);
             controller.setRedLedState(false);
             break;
           }
-          
+
           state++;
         }
 
