@@ -8,13 +8,18 @@ public class GPIOSensorAdaptor extends AbstractSensorAdaptor {
 
   private PiMicroController controller = PiMicroController.getInstance();
 
+  private boolean state = false;
+
   public GPIOSensorAdaptor() {
     super("BTN", SensorDataType.BOOL);
   }
 
   @Override
   public SensorData process() {
-    return createSensorData(Boolean.toString(controller.isButtonPressed()));
+    if (controller.isButtonPressed()) {
+      state = !state;
+    }
+    return createSensorData(String.valueOf(state));
   }
 
 }
