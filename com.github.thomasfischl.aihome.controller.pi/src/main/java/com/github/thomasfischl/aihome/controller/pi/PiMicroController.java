@@ -67,8 +67,10 @@ public class PiMicroController {
       for (String line : data) {
         line = line.trim();
         if (line.charAt(2) == ':') {
-          devices.add(new BluetoothDevice(null, line.substring(0, 17)));
-          throw new RuntimeException("Set corret device name");
+          // System.out.println("Line: " + line);
+          String macAddress = line.substring(0, 17).trim();
+          String deviceName = line.substring(17).trim();
+          devices.add(new BluetoothDevice(deviceName, macAddress));
         }
       }
     }
