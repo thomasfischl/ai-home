@@ -4,13 +4,8 @@
 
   <groupId>com.github.thomasfischl.aihome.controller</groupId>
   <artifactId>aihome.controller</artifactId>
-
-  <parent>
-    <groupId>com.github.thomasfischl.aihome</groupId>
-    <artifactId>com.github.thomasfischl.aihome</artifactId>
-    <version>0.0.1</version>
-    <relativePath>../com.github.thomasfischl.aihome/pom.xml</relativePath>
-  </parent>
+  <url>https://github.com/thomasfischl/ai-home</url>
+  <name>AI-Home Controller</name>
 
   <developers>
     <developer>
@@ -18,6 +13,13 @@
       <name>Thomas Fischl</name>
     </developer>
   </developers>
+
+  <parent>
+    <groupId>com.github.thomasfischl.aihome</groupId>
+    <artifactId>com.github.thomasfischl.aihome</artifactId>
+    <version>0.0.1</version>
+    <relativePath>../com.github.thomasfischl.aihome/pom.xml</relativePath>
+  </parent>
 
   <dependencies>
     <dependency>
@@ -30,7 +32,6 @@
       <artifactId>guava</artifactId>
       <version>17.0</version>
     </dependency>
-
   </dependencies>
 
   <build>
@@ -60,6 +61,4 @@
     </plugins>
   </build>
 
-  <url>https://github.com/thomasfischl/ai-home</url>
-  <name>AI-Home Controller</name>
 </project>
