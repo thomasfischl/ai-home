@@ -24,8 +24,8 @@ public class Application {
   public void start() {
     initPhase();
 
-    writerService = new SensorDataWriterService();
-    sensorAggregatorService = new SensorAggregatorService(writerService);
+    writerService = new SensorDataWriterService(null);
+    sensorAggregatorService = new SensorAggregatorService(new SensorDataProcessorService(writerService));
 
     pool = Executors.newScheduledThreadPool(10);
     pool.scheduleAtFixedRate(new PidFileWatcher(), 0, 2, TimeUnit.SECONDS);

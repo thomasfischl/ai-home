@@ -6,33 +6,26 @@ import java.util.Map;
 import com.github.thomasfischl.aihome.communication.sensor.SensorData;
 import com.github.thomasfischl.aihome.communication.sensor.SensorDataGroup;
 
-public class SensorAggregatorService implements Runnable {
+public class SensorAggregatorService extends AbstractPipelineService implements Runnable {
 
   private Map<String, SensorData> values = new HashMap<String, SensorData>();
 
-  private SensorDataWriterService writerService;
-
-  public SensorAggregatorService(SensorDataWriterService writerService) {
-    this.writerService = writerService;
+  public SensorAggregatorService(AbstractPipelineService nextService) {
+    super(nextService);
   }
 
   public void process(SensorData data) {
-    System.out.println("process data: " + data);
-
-    String key = data.getName();
-    // if (values.containsKey(key)) {
-    // SensorData tmp = values.get(key);
-    // if (data.getTime() > tmp.getTime()) {
-    // System.out.println("Update value '" + key + "' to '" + data.getValue() + "'");
-    // values.put(key, data);
-    // }
-    // } else {
-    values.put(key, data);
-    // }
+//    System.out.println("process data: " + data);
+    values.put(data.getName(), data);
   }
 
   @Override
   public void run() {
-    writerService.storeData(new SensorDataGroup(values.values(), System.currentTimeMillis()));
+    executeNextService(new SensorDataGroup(values.values(), System.currentTimeMillis()));
+  }
+
+  @Override
+  public void process(SensorDataGroup data) {
+    executeNextService(new SensorDataGroup(values.values(), System.currentTimeMillis()));
   }
 }
