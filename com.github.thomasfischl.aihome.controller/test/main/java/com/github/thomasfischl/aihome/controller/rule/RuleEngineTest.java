@@ -26,9 +26,11 @@ public class RuleEngineTest {
     ArrayList<SensorData> values = new ArrayList<SensorData>();
     values.add(new SensorData("XYZ", "false", SensorDataType.BOOL));
     SensorDataGroup result = engine.evaluate(new SensorDataGroup(values, 0));
-    Assert.assertEquals(2, result.getValues().size());
-    Assert.assertEquals("Z", result.getValues().get(1).getName());
-    Assert.assertEquals("1", result.getValues().get(1).getValue());
+    Assert.assertEquals(3, result.getValues().size());
+    Assert.assertEquals("r", result.getValues().get(1).getName());
+    Assert.assertEquals("false", result.getValues().get(1).getValue());
+    Assert.assertEquals("Z", result.getValues().get(2).getName());
+    Assert.assertEquals("1", result.getValues().get(2).getValue());
   }
 
   @Test
@@ -52,13 +54,16 @@ public class RuleEngineTest {
     values.add(new SensorData("BT", "true", SensorDataType.BOOL));
     values.add(new SensorData("BTN", "false", SensorDataType.BOOL));
     SensorDataGroup result = engine.evaluate(new SensorDataGroup(values, 0));
-    Assert.assertEquals(2, result.getValues().size());
+    Assert.assertEquals(3, result.getValues().size());
+    Assert.assertEquals("r", result.getValues().get(2).getName());
+    Assert.assertEquals("false", result.getValues().get(2).getValue());
   }
 
   private RuleEngine createDemoData() throws IOException {
     File propFile = testFolder.newFile("rule.properties");
 
     StringBuilder sb = new StringBuilder();
+    sb.append("default.r = false \n");
     sb.append("rule1.BT = true \n");
     sb.append("rule1.BTN = true\n");
     sb.append("rule1.result.r = true\n");
