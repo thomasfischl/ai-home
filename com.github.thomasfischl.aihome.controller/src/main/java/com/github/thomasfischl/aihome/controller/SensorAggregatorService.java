@@ -10,28 +10,29 @@ public class SensorAggregatorService implements Runnable {
 
   private Map<String, SensorData> values = new HashMap<String, SensorData>();
 
-  public void process(SensorData data) {
-     System.out.println("process data: " + data);
+  private SensorDataWriterService writerService;
 
-    String key = data.getName();
-    if (values.containsKey(key)) {
-      SensorData tmp = values.get(key);
-      if (data.getTime() > tmp.getTime()) {
-        // System.out.println("Update value '" + key + "' to '" + data.getValue() + "'");
-        values.put(key, data);
-      }
-    } else {
-      values.put(key, data);
-    }
+  public SensorAggregatorService(SensorDataWriterService writerService) {
+    this.writerService = writerService;
   }
 
-  public SensorDataGroup send() {
-    return new SensorDataGroup(values.values());
+  public void process(SensorData data) {
+    System.out.println("process data: " + data);
+
+    String key = data.getName();
+    // if (values.containsKey(key)) {
+    // SensorData tmp = values.get(key);
+    // if (data.getTime() > tmp.getTime()) {
+    // System.out.println("Update value '" + key + "' to '" + data.getValue() + "'");
+    // values.put(key, data);
+    // }
+    // } else {
+    values.put(key, data);
+    // }
   }
 
   @Override
   public void run() {
-    // TODO implement me
+    writerService.storeData(new SensorDataGroup(values.values(), System.currentTimeMillis()));
   }
-
 }

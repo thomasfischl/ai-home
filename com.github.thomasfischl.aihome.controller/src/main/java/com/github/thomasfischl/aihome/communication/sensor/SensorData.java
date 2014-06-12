@@ -8,25 +8,18 @@ public class SensorData {
 
   private SensorDataType type;
 
-  private long time;
-
   public SensorData() {
   }
 
-  public SensorData(String name, String value, SensorDataType type, long time) {
+  public SensorData(String name, String value, SensorDataType type) {
     super();
     this.name = name;
     this.value = value;
     this.type = type;
-    this.time = time;
   }
 
   public String getName() {
     return name;
-  }
-
-  public long getTime() {
-    return time;
   }
 
   public SensorDataType getType() {
@@ -39,7 +32,7 @@ public class SensorData {
 
   @Override
   public String toString() {
-    return "SensorData: [name:" + name + " value: " + value + " time: " + time + "]";
+    return "SensorData: [name:" + name + " value: " + value + "]";
   }
 
 }

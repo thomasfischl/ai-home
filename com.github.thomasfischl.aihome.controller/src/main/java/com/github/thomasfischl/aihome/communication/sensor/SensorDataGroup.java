@@ -4,27 +4,25 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlRootElement;
-
 import com.google.common.base.Joiner;
 
-@XmlRootElement
-@XmlAccessorType(XmlAccessType.FIELD)
 public class SensorDataGroup {
 
   private List<SensorData> values = new ArrayList<SensorData>();
 
-  public SensorDataGroup() {
-  }
+  private long timestamp;
 
-  public SensorDataGroup(Collection<SensorData> values) {
+  public SensorDataGroup(Collection<SensorData> values, long timestamp) {
+    this.timestamp = timestamp;
     this.values = new ArrayList<SensorData>(values);
   }
 
   public List<SensorData> getValues() {
     return values;
+  }
+
+  public long getTimestamp() {
+    return timestamp;
   }
 
   @Override

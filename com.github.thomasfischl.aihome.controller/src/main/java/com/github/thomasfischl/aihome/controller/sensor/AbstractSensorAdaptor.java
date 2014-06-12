@@ -16,7 +16,7 @@ public abstract class AbstractSensorAdaptor {
   }
 
   protected SensorData createSensorData(String value) {
-    return new SensorData(name, value, type, System.currentTimeMillis());
+    return new SensorData(name, value, type);
   }
 
   public abstract SensorData process();

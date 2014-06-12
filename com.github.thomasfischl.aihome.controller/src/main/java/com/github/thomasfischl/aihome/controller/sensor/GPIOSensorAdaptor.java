@@ -9,7 +9,7 @@ public class GPIOSensorAdaptor extends AbstractSensorAdaptor {
   private PiMicroController controller = PiMicroController.getInstance();
 
   public GPIOSensorAdaptor() {
-    super("Button", SensorDataType.BOOL);
+    super("BTN", SensorDataType.BOOL);
   }
 
   @Override

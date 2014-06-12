@@ -14,7 +14,7 @@ public class BluetoothSearcherSensorAdaptor extends AbstractSensorAdaptor {
   private final String macAddress;
 
   public BluetoothSearcherSensorAdaptor(String macAddress) {
-    super("BluetoothSearcher", SensorDataType.BOOL);
+    super("BT", SensorDataType.BOOL);
     this.macAddress = macAddress;
   }
 

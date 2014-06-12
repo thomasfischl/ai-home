@@ -13,16 +13,22 @@ import com.github.thomasfischl.aihome.controller.sensor.TimeSensorAdaptor;
 
 public class Application {
 
-  private SensorAggregatorService sensorAggregatorService = new SensorAggregatorService();
+  private SensorAggregatorService sensorAggregatorService;
 
   private ScheduledExecutorService pool;
 
   private PiMicroController controller = PiMicroController.getInstance();
 
+  private SensorDataWriterService writerService;
+
   public void start() {
     initPhase();
 
+    writerService = new SensorDataWriterService();
+    sensorAggregatorService = new SensorAggregatorService(writerService);
+
     pool = Executors.newScheduledThreadPool(10);
+    pool.scheduleAtFixedRate(new PidFileWatcher(), 0, 2, TimeUnit.SECONDS);
     pool.scheduleAtFixedRate(sensorAggregatorService, 5000, 500, TimeUnit.MILLISECONDS);
     pool.scheduleAtFixedRate(new Runnable() {
       @Override

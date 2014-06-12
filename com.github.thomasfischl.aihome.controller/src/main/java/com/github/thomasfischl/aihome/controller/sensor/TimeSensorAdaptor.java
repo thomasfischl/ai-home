@@ -10,7 +10,7 @@ import com.github.thomasfischl.aihome.communication.sensor.SensorDataType;
 public class TimeSensorAdaptor extends AbstractSensorAdaptor {
 
   public TimeSensorAdaptor() {
-    super("Time", SensorDataType.ENUM);
+    super("T", SensorDataType.ENUM);
   }
 
   @Override
