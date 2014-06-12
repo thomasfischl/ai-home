@@ -6,8 +6,35 @@
   <name>AI-Home</name>
   <packaging>pom</packaging>
   <modules>
-    <module>../com.github.thomasfischl.aihome.communication</module>
+    <module>../com.github.thomasfischl.aihome.controller.pi</module>
     <module>../com.github.thomasfischl.aihome.controller</module>
-    <module>../com.github.thomasfischl.aihome.server</module>
   </modules>
+
+  <build>
+    <plugins>
+      <plugin>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <source>1.7</source>
+          <target>1.7</target>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <artifactId>maven-assembly-plugin</artifactId>
+        <version>2.4</version>
+        <configuration>
+          <archive>
+            <manifest>
+              <mainClass>com.github.thomasfischl.aihome.controller.Application</mainClass>
+            </manifest>
+          </archive>
+          <descriptorRefs>
+            <descriptorRef>jar-with-dependencies</descriptorRef>
+          </descriptorRefs>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
 </project>

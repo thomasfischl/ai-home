@@ -3,13 +3,10 @@ package com.github.thomasfischl.aihome.controller;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.springframework.stereotype.Service;
-
 import com.github.thomasfischl.aihome.communication.sensor.SensorData;
 import com.github.thomasfischl.aihome.communication.sensor.SensorDataGroup;
 
-@Service("sensorAggregator")
-public class SensorAggregatorService {
+public class SensorAggregatorService implements Runnable {
 
   private Map<String, SensorData> values = new HashMap<String, SensorData>();
 
@@ -32,6 +29,11 @@ public class SensorAggregatorService {
   public SensorDataGroup send() {
     System.out.println("send group");
     return new SensorDataGroup(values.values());
+  }
+
+  @Override
+  public void run() {
+    // TODO implement me
   }
 
 }

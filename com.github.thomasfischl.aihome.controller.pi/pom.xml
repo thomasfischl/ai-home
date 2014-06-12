@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>com.github.thomasfischl.aihome.controller.pi</groupId>
-  <artifactId>aihome.controller.pi</artifactId>
+  <artifactId>com.github.thomasfischl.aihome.controller.pi</artifactId>
 
   <parent>
     <groupId>com.github.thomasfischl.aihome</groupId>
@@ -26,23 +26,6 @@
 
   <dependencies>
     <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-log4j12</artifactId>
-      <version>${org.slf4j-version}</version>
-      <scope>runtime</scope>
-    </dependency>
-
-    <dependency>
-      <groupId>ch.qos.logback</groupId>
-      <artifactId>logback-classic</artifactId>
-      <version>${logback.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>javax.inject</groupId>
-      <artifactId>javax.inject</artifactId>
-      <version>1</version>
-    </dependency>
-    <dependency>
       <groupId>com.pi4j</groupId>
       <artifactId>pi4j-core</artifactId>
       <version>0.0.5</version>
@@ -53,14 +36,11 @@
         </exclusion>
       </exclusions>
     </dependency>
-
     <dependency>
       <groupId>commons-io</groupId>
       <artifactId>commons-io</artifactId>
       <version>2.4</version>
     </dependency>
-
-
   </dependencies>
 
   <build>
@@ -87,21 +67,6 @@
           </descriptorRefs>
         </configuration>
       </plugin>
-
-      <!-- <plugin> -->
-      <!-- <groupId>org.apache.maven.plugins</groupId> -->
-      <!-- <artifactId>maven-jar-plugin</artifactId> -->
-      <!-- <configuration> -->
-      <!-- <archive> -->
-      <!-- <manifest> -->
-      <!-- <addClasspath>true</addClasspath> -->
-      <!-- <classpathPrefix>lib/</classpathPrefix> -->
-      <!-- <mainClass>theMainClass</mainClass> -->
-      <!-- <mainClass>com.github.thomasfischl.aihome.controller.pi.LedBlinkTest</mainClass> -->
-      <!-- </manifest> -->
-      <!-- </archive> -->
-      <!-- </configuration> -->
-      <!-- </plugin> -->
 
     </plugins>
   </build>

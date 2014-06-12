@@ -1,16 +1,24 @@
 package com.github.thomasfischl.aihome.controller;
 
-import org.springframework.context.support.GenericXmlApplicationContext;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 public class Application {
 
-  public static void main(String[] args) {
-    GenericXmlApplicationContext ctx = new GenericXmlApplicationContext();
-    ctx.setValidating(false);
-    ctx.load("com/github/thomasfischl/aihome/controller/integration.xml");
-    ctx.load("sensor-config.xml");
-    ctx.refresh();
-    ctx.start();
+  private SensorAggregatorService sensorAggregatorService = new SensorAggregatorService();
+
+  private ScheduledExecutorService pool;
+
+  public void start() {
+    pool = Executors.newScheduledThreadPool(10);
+    pool.scheduleAtFixedRate(sensorAggregatorService, 10, 10, TimeUnit.SECONDS);
+    
+    //TODO start all sensor adaptors
+    
   }
 
+  public static void main(String[] args) {
+
+  }
 }
