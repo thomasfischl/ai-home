@@ -4,6 +4,8 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
+import com.github.thomasfischl.aihome.controller.actors.ActorExecutor;
+import com.github.thomasfischl.aihome.controller.actors.RelayActor;
 import com.github.thomasfischl.aihome.controller.pi.PiMicroController;
 import com.github.thomasfischl.aihome.controller.sensor.AbstractSensorAdaptor;
 import com.github.thomasfischl.aihome.controller.sensor.BluetoothSearcherSensorAdaptor;
@@ -19,17 +21,20 @@ public class Application {
 
   private PiMicroController controller = PiMicroController.getInstance();
 
-  private SensorDataWriterService writerService;
+  private ActorExecutor actorExecutor;
 
   public void start() {
     initPhase();
 
-    writerService = new SensorDataWriterService(null);
-    sensorAggregatorService = new SensorAggregatorService(new SensorDataProcessorService(writerService));
+    actorExecutor = new ActorExecutor(null);
+    actorExecutor.addActor(new RelayActor());
+
+    sensorAggregatorService = new SensorAggregatorService(new SensorDataProcessorService(new SensorDataWriterService(actorExecutor)));
 
     pool = Executors.newScheduledThreadPool(10);
     pool.scheduleAtFixedRate(new PidFileWatcher(), 0, 2, TimeUnit.SECONDS);
     pool.scheduleAtFixedRate(sensorAggregatorService, 5000, 500, TimeUnit.MILLISECONDS);
+    pool.scheduleAtFixedRate(actorExecutor, 5000, 500, TimeUnit.MILLISECONDS);
     pool.scheduleAtFixedRate(new Runnable() {
       @Override
       public void run() {
@@ -63,6 +68,7 @@ public class Application {
   }
 
   private void schedule(AbstractSensorAdaptor adaptor, long rate) {
+    System.out.println("Activate Sensor: " + adaptor.getClass().getSimpleName());
     pool.scheduleAtFixedRate(new SensorAdaptorExecutor(adaptor, sensorAggregatorService), 10, rate, TimeUnit.MILLISECONDS);
   }
 
