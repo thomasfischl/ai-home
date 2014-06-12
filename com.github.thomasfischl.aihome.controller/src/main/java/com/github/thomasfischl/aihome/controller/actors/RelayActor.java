@@ -13,7 +13,7 @@ public class RelayActor extends AbstractActor {
 
   @Override
   public void process(SensorData data) {
-    System.out.println("Relay Actor called ...");
+//    System.out.println("Relay Actor called ...");
     if ("true".equalsIgnoreCase(data.getValue())) {
       controller.setRedLedState(true);
       controller.setRelayState(true);

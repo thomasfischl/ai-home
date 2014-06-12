@@ -1,45 +1,21 @@
 package com.github.thomasfischl.aihome.controller;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.io.File;
 
-import com.github.thomasfischl.aihome.communication.sensor.SensorData;
 import com.github.thomasfischl.aihome.communication.sensor.SensorDataGroup;
-import com.github.thomasfischl.aihome.communication.sensor.SensorDataType;
+import com.github.thomasfischl.aihome.controller.rule.RuleEngine;
 
 public class SensorDataProcessorService extends AbstractPipelineService {
+
+  private RuleEngine engine = new RuleEngine(new File("/tmp/rule.config"));
 
   public SensorDataProcessorService(AbstractPipelineService nextService) {
     super(nextService);
   }
 
   public void process(SensorDataGroup data) {
-
-    List<SensorData> newData = new ArrayList<>();
-    
-    for (SensorData d : data.getValues()) {
-      SensorData newSensorData = evaluate(d);
-      if (newSensorData != null) {
-        newData.add(newSensorData);
-      }
-    }
-
-    data.getValues().addAll(newData);
-    executeNextService(data);
-  }
-
-  private SensorData evaluate(SensorData data) {
-    if ("BT".equals(data.getName())) {
-
-      if ("true".equals(data.getValue())) {
-        return new SensorData("R", "true", SensorDataType.BOOL);
-      } else {
-        return new SensorData("R", "false", SensorDataType.BOOL);
-      }
-
-    }
-
-    return null;
+    SensorDataGroup newData = engine.evaluate(data);
+    executeNextService(newData);
   }
 
 }
