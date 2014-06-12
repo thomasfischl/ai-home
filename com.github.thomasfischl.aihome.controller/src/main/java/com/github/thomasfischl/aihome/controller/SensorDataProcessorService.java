@@ -7,7 +7,7 @@ import com.github.thomasfischl.aihome.controller.rule.RuleEngine;
 
 public class SensorDataProcessorService extends AbstractPipelineService {
 
-  private RuleEngine engine = new RuleEngine(new File("/tmp/rule.config"));
+  private RuleEngine engine = new RuleEngine(new File("/home/pi/aihome/rule.config"));
 
   public SensorDataProcessorService(AbstractPipelineService nextService) {
     super(nextService);
