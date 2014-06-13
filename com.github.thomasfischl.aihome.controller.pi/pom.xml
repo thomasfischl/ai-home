@@ -4,7 +4,9 @@
 
   <groupId>com.github.thomasfischl.aihome.controller.pi</groupId>
   <artifactId>com.github.thomasfischl.aihome.controller.pi</artifactId>
-
+  <url>https://github.com/thomasfischl/ai-home</url>
+  <name>AI-Home Controller PI Abstraction</name>
+  
   <parent>
     <groupId>com.github.thomasfischl.aihome</groupId>
     <artifactId>com.github.thomasfischl.aihome</artifactId>
@@ -71,6 +73,4 @@
     </plugins>
   </build>
 
-  <url>https://github.com/thomasfischl/ai-home</url>
-  <name>AI-Home Controller</name>
 </project>

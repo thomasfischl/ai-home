@@ -5,7 +5,7 @@
   <groupId>com.github.thomasfischl.aihome.brain</groupId>
   <artifactId>com.github.thomasfischl.aihome.brain</artifactId>
   <url>https://github.com/thomasfischl/ai-home</url>
-  <name>AI-Home Controller</name>
+  <name>AI-Home Brain</name>
 
   <developers>
     <developer>
