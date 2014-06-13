@@ -32,6 +32,11 @@
       <artifactId>guava</artifactId>
       <version>17.0</version>
     </dependency>
+    <dependency>
+      <groupId>com.github.thomasfischl.aihome.controller</groupId>
+      <artifactId>com.github.thomasfischl.aihome.controller</artifactId>
+      <version>0.0.1</version>
+    </dependency>
   </dependencies>
 
   <build>

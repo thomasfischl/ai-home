@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>com.github.thomasfischl.aihome.controller</groupId>
-  <artifactId>aihome.controller</artifactId>
+  <artifactId>com.github.thomasfischl.aihome.controller</artifactId>
   <url>https://github.com/thomasfischl/ai-home</url>
   <name>AI-Home Controller</name>
 

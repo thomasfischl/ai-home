@@ -1,4 +1,4 @@
-package com.github.thomasfischl.aihome.controller;
+package com.github.thomasfischl.aihome.brain;
 
 public class Application {
 
