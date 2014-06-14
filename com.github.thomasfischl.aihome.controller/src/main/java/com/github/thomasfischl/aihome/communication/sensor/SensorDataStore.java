@@ -40,9 +40,9 @@ public class SensorDataStore {
     }
   }
 
-  public List<SensorDataGroup> readSensorData() throws IOException {
+  public List<SensorDataGroup> readSensorData(File store) throws IOException {
     List<SensorDataGroup> result = new ArrayList<>();
-    List<String> lines = FileUtils.readLines(dataStore);
+    List<String> lines = FileUtils.readLines(store);
 
     Gson g = new Gson();
     for (String line : lines) {
