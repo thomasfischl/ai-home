@@ -34,7 +34,7 @@ public class TrainingDataGenerator {
   }
 
   private static void generateSampleData(SensorDataStore store, int fromHour, int toHour, int weekday) {
-    for (int i = 1; i < 25; i++) {
+    for (int i = 0; i < 24; i++) {
       if (fromHour <= i && i <= toHour) {
         store.storeData(SensorDataHelper.createSensorDataGroup(false, i, weekday, true, true));
       } else {

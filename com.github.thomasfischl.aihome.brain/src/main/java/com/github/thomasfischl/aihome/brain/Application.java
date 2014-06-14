@@ -52,13 +52,21 @@ public class Application {
     }
     System.out.println("-----------------------------------------------------");
     System.out.println("  Train neuronal network ...");
-    BrainTrainer trainer = new BrainTrainer(2, 10);
-    trainer.advancedTraining(trainingData, 0.7, 50000);
+    BrainTrainer trainer = new BrainTrainer(2, 200);
+    trainer.advancedTraining(trainingData, 0.7, 20000);
     System.out.println("-----------------------------------------------------");
     System.out.println("  Test neuronal network ...");
 
+    analyzeNetwork(inputNeuronNames, outputNeuronNames, trainer);
+
+    Encog.getInstance().shutdown();
+    System.out.println("Finish");
+  }
+
+  private static void analyzeNetwork(String[] inputNeuronNames, String[] outputNeuronNames, BrainTrainer trainer) {
+    List<SensorDataGroup> interestingData = new ArrayList<>();
     for (int weekDay = Calendar.SUNDAY; weekDay <= Calendar.SATURDAY; weekDay++) {
-      for (int hour = 1; hour <= 24; hour++) {
+      for (int hour = 0; hour < 24; hour++) {
         for (int bt = 0; bt <= 1; bt++) {
           SensorDataGroup sensorData = SensorDataHelper.createSensorDataGroup(false, hour, weekDay, bt == 1, true);
           BasicNetwork network = trainer.getNetwork();
@@ -67,14 +75,14 @@ public class Application {
           // check if relay is on
           if (result.getData(0) > result.getData(1)) {
             System.out.println("relay on hour==" + hour + " and weekday=" + weekDay + " and bluetooth= " + (bt == 1 ? "true" : "false"));
+            interestingData.add(sensorData);
           }
-
         }
       }
     }
-
-    Encog.getInstance().shutdown();
-    System.out.println("Finish");
+    
+    
+    
   }
 
   private static List<MLDataPair> loadTrainingData(File inputFile, String[] inputNeuronNames, String[] outputNeuronNames)
@@ -136,7 +144,14 @@ public class Application {
         return 0;
       }
     } else if (val.getType() == SensorDataType.ENUM) {
-      return Double.valueOf(val.getValue());
+      double dVal = Double.valueOf(val.getValue());
+      if ("T".equals(val.getName())) {
+        return dVal / 23;
+      } else if ("WD".equals(val.getName())) {
+        return (dVal - 1) / 6;
+      } else {
+        throw new IllegalStateException("Invalid enum sensor '" + val.getName() + "'");
+      }
     }
     throw new IllegalArgumentException("The sensor data type '" + val.getType().name() + "' is not supported.");
   }
