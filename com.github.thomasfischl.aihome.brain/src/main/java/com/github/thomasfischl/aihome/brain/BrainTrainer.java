@@ -63,7 +63,7 @@ public class BrainTrainer {
         testData.add(data.get(i));
       }
     }
-
+    
     network = training(network, trainData, testData, maxEpoch);
   }
 
@@ -81,7 +81,12 @@ public class BrainTrainer {
           testError = network.calculateError(testData);
         }
 
-        System.out.format("Epoch # %d Error: %.2f (%.2f)\n", epoch, train.getError(), testError);
+        // try {
+        // Thread.sleep(4);
+        // } catch (InterruptedException e1) {
+        // e1.printStackTrace();
+        // }
+        System.out.format("Epoch # %d Error: %.2f (%.2f)\n", epoch, train.getError() , testError);
       }
       epoch++;
     } while (train.getError() > 0.05 && epoch < maxEpoch);

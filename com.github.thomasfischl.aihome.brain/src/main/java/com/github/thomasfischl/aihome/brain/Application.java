@@ -53,7 +53,7 @@ public class Application {
     System.out.println("-----------------------------------------------------");
     System.out.println("  Train neuronal network ...");
     BrainTrainer trainer = new BrainTrainer(2, 10);
-    trainer.advancedTraining(trainingData, 0.7, 5000);
+    trainer.advancedTraining(trainingData, 0.7, 50000);
     System.out.println("-----------------------------------------------------");
     System.out.println("  Test neuronal network ...");
 
