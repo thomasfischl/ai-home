@@ -5,6 +5,7 @@ import java.util.Set;
 
 import com.github.thomasfischl.aihome.communication.sensor.SensorData;
 import com.github.thomasfischl.aihome.communication.sensor.SensorDataGroup;
+import com.github.thomasfischl.aihome.communication.sensor.SensorDataType;
 
 public class Condition {
 
@@ -12,8 +13,16 @@ public class Condition {
 
   private Set<String> values = new HashSet<>();
 
+  private SensorDataType type;
+
   public Condition(String name, String value) {
     this.name = name;
+    addValue(value);
+  }
+
+  public Condition(String name, String value, SensorDataType type) {
+    this.name = name;
+    this.type = type;
     addValue(value);
   }
 
@@ -31,6 +40,10 @@ public class Condition {
 
   public Set<String> getValues() {
     return values;
+  }
+
+  public SensorDataType getType() {
+    return type;
   }
 
   public boolean evaluate(SensorDataGroup data) {

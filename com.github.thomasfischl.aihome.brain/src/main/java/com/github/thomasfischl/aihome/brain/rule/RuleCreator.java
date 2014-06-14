@@ -1,16 +1,17 @@
 package com.github.thomasfischl.aihome.brain.rule;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
+import com.github.thomasfischl.aihome.communication.sensor.SensorDataType;
 import com.github.thomasfischl.aihome.controller.rule.Rule;
 import com.github.thomasfischl.aihome.controller.rule.RuleStore;
 
 public class RuleCreator {
 
-  private RuleNode root = new RuleNode(null, null);
+  private RuleNode root = new RuleNode(null, null, null);
 
   public RuleCreator() {
   }
@@ -20,7 +21,10 @@ public class RuleCreator {
   }
 
   public void merge() {
-    merge(root);
+    for (int i = 0; i < 5; i++) {
+      merge(root);
+      flat(root);
+    }
   }
 
   public void merge(RuleNode node) {
@@ -49,9 +53,34 @@ public class RuleCreator {
     }
   }
 
+  public void flat(RuleNode node) {
+    if (node.isLeaf()) {
+      return;
+    }
+
+    if (node.getChildren().get(0).isLeaf()) {
+      SensorDataType type = node.getChildren().get(0).getType();
+      Set<String> values = new HashSet<>(type.getPossibleValues());
+
+      for (RuleNode n : node.getChildren()) {
+        values.remove(n.getValue());
+      }
+
+      if (values.isEmpty()) {
+        System.out.println("Flatten rule nodes with type '" + type + "'");
+        node.removeAllChilren();
+      }
+
+    } else {
+      for (RuleNode n : node.getChildren()) {
+        flat(n);
+      }
+    }
+  }
+
   public void generateRules() {
     int idx = 0;
-    List<Rule> rules = new ArrayList<>();
+    Set<Rule> rules = new HashSet<>();
 
     Rule r = new Rule("rule");
     for (RuleNode n : root.getChildren()) {

@@ -13,8 +13,8 @@ import org.encog.ml.data.basic.BasicMLData;
 import org.encog.ml.data.basic.BasicMLDataPair;
 import org.encog.neural.networks.BasicNetwork;
 
-import com.github.thomasfischl.aihome.brain.rule.RuleNode;
 import com.github.thomasfischl.aihome.brain.rule.RuleCreator;
+import com.github.thomasfischl.aihome.brain.rule.RuleNode;
 import com.github.thomasfischl.aihome.communication.sensor.SensorData;
 import com.github.thomasfischl.aihome.communication.sensor.SensorDataGroup;
 import com.github.thomasfischl.aihome.communication.sensor.SensorDataStore;
@@ -77,10 +77,9 @@ public class Application {
 
           // check if relay is on
           if (result.getData(0) > result.getData(1)) {
-            // System.out.println("relay on hour==" + hour + " and weekday=" + weekDay + " and bluetooth= " + (bt == 1 ? "true" : "false"));
-            RuleNode btNode = new RuleNode("BT", getSensorDataValue(sensorData, "BT").getValue());
-            RuleNode tNode = new RuleNode("T", getSensorDataValue(sensorData, "T").getValue());
-            RuleNode wdNode = new RuleNode("WD", getSensorDataValue(sensorData, "WD").getValue());
+            RuleNode btNode = new RuleNode("BT", getSensorDataValue(sensorData, "BT").getValue(), SensorDataType.BOOL);
+            RuleNode tNode = new RuleNode("T", getSensorDataValue(sensorData, "T").getValue(), SensorDataType.HOUR_OF_DAY);
+            RuleNode wdNode = new RuleNode("WD", getSensorDataValue(sensorData, "WD").getValue(), SensorDataType.WEEKDAY);
 
             btNode.addChild(wdNode);
             wdNode.addChild(tNode);
@@ -152,15 +151,10 @@ public class Application {
       } else {
         return 0;
       }
-    } else if (val.getType() == SensorDataType.ENUM) {
-      double dVal = Double.valueOf(val.getValue());
-      if ("T".equals(val.getName())) {
-        return dVal / 23;
-      } else if ("WD".equals(val.getName())) {
-        return (dVal - 1) / 6;
-      } else {
-        throw new IllegalStateException("Invalid enum sensor '" + val.getName() + "'");
-      }
+    } else if (val.getType() == SensorDataType.HOUR_OF_DAY) {
+      return Double.valueOf(val.getValue()) / 23;
+    } else if (val.getType() == SensorDataType.WEEKDAY) {
+      return (Double.valueOf(val.getValue()) - 1) / 6;
     }
     throw new IllegalArgumentException("The sensor data type '" + val.getType().name() + "' is not supported.");
   }
