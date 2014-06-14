@@ -54,8 +54,8 @@ public class Application {
     }
     System.out.println("-----------------------------------------------------");
     System.out.println("  Train neuronal network ...");
-    BrainTrainer trainer = new BrainTrainer(2, 200);
-    trainer.advancedTraining(trainingData, 0.7, 20000);
+    BrainTrainer trainer = new BrainTrainer(2, 10);
+    trainer.advancedTraining(trainingData, 0.7, 10000, 0.001);
     System.out.println("-----------------------------------------------------");
     System.out.println("  Test neuronal network ...");
 
@@ -84,6 +84,8 @@ public class Application {
             btNode.addChild(wdNode);
             wdNode.addChild(tNode);
             creater.addTree(btNode);
+          } else if (bt == 1) {
+            System.out.println(weekDay + " " + hour);
           }
         }
       }

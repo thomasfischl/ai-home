@@ -46,7 +46,7 @@ public class BrainTrainer {
     return network;
   }
 
-  public void advancedTraining(List<MLDataPair> data, final double ratio, final int maxEpoch) {
+  public void advancedTraining(List<MLDataPair> data, final double ratio, final int maxEpoch, double error) {
     network = createNetwork(data.get(0));
 
     Collections.shuffle(data);
@@ -63,11 +63,11 @@ public class BrainTrainer {
         testData.add(data.get(i));
       }
     }
-    
-    network = training(network, trainData, testData, maxEpoch);
+
+    network = training(network, trainData, testData, maxEpoch, error);
   }
 
-  private BasicNetwork training(BasicNetwork network, MLDataSet trainData, MLDataSet testData, int maxEpoch) {
+  private BasicNetwork training(BasicNetwork network, MLDataSet trainData, MLDataSet testData, int maxEpoch, double error) {
 
     // train the neural network
     final ResilientPropagation train = new ResilientPropagation(network, trainData);
@@ -80,20 +80,16 @@ public class BrainTrainer {
         if (testData != null) {
           testError = network.calculateError(testData);
         }
-
-        // try {
-        // Thread.sleep(4);
-        // } catch (InterruptedException e1) {
-        // e1.printStackTrace();
-        // }
-        System.out.format("Epoch # %d Error: %.2f (%.2f)\n", epoch, train.getError() , testError);
+        System.out.format("Epoch # %d Error: %.2f (%.2f)\n", epoch, train.getError(), testError);
       }
       epoch++;
-    } while (train.getError() > 0.05 && epoch < maxEpoch);
+    } while (train.getError() > error && epoch < maxEpoch);
     train.finishTraining();
 
-    double e = network.calculateError(trainData);
-    System.out.println("Network trained to error: " + (e * 100));
+    double errorTrain = network.calculateError(trainData);
+    double errorTest = network.calculateError(testData);
+    System.out.println("Network Train Error: " + (errorTrain * 100));
+    System.out.println("Network Test Error : " + (errorTest * 100));
 
     return network;
   }

@@ -21,10 +21,13 @@ public class RuleCreator {
   }
 
   public void merge() {
+    merge(root);
+    System.out.println(this);
     for (int i = 0; i < 5; i++) {
       merge(root);
       flat(root);
     }
+    System.out.println(this);
   }
 
   public void merge(RuleNode node) {
