@@ -1,5 +1,8 @@
 package com.github.thomasfischl.aihome.controller.rule;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import com.github.thomasfischl.aihome.communication.sensor.SensorData;
 import com.github.thomasfischl.aihome.communication.sensor.SensorDataGroup;
 
@@ -7,16 +10,27 @@ public class Condition {
 
   private String name;
 
-  private String value;
+  private Set<String> values = new HashSet<>();
 
   public Condition(String name, String value) {
-    super();
     this.name = name;
-    this.value = value;
+    addValue(value);
+  }
+
+  public Condition(String name) {
+    this.name = name;
   }
 
   public String getName() {
     return name;
+  }
+
+  public void addValue(String value) {
+    values.add(value);
+  }
+
+  public Set<String> getValues() {
+    return values;
   }
 
   public boolean evaluate(SensorDataGroup data) {
@@ -29,7 +43,15 @@ public class Condition {
   }
 
   public boolean evaluate(SensorData data) {
-    return data.getName().equals(name) && data.getValue().equals(value);
+    return data.getName().equals(name) && values.contains(data.getValue());
+  }
+
+  public Condition cloneCondition() {
+    Condition newCondition = new Condition(name);
+    for (String val : values) {
+      newCondition.addValue(val);
+    }
+    return newCondition;
   }
 
 }

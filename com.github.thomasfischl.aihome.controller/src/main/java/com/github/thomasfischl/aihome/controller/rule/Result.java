@@ -21,4 +21,8 @@ public class Result {
     return new SensorData(name, value, SensorDataType.BOOL);
   }
 
+  public Result cloneResult() {
+    return new Result(name, value);
+  }
+
 }

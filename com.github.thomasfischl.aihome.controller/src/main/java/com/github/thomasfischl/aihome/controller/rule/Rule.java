@@ -18,6 +18,19 @@ public class Rule {
     this.name = name;
   }
 
+  public List<Condition> getConditions() {
+    return conditions;
+  }
+
+  public Condition getCondition(String name) {
+    for (Condition c : conditions) {
+      if (name.equals(c.getName())) {
+        return c;
+      }
+    }
+    return null;
+  }
+
   public void addCondition(Condition condition) {
     conditions.add(condition);
   }
@@ -32,6 +45,23 @@ public class Rule {
 
   public String getName() {
     return name;
+  }
+
+  public void setName(String name) {
+    this.name = name;
+  }
+
+  public Rule cloneRule() {
+    Rule newRule = new Rule(name);
+    for (Condition c : conditions) {
+      newRule.addCondition(c.cloneCondition());
+    }
+
+    for (Result r : results) {
+      newRule.addResult(r.cloneResult());
+    }
+
+    return newRule;
   }
 
   public boolean evaluate(SensorDataGroup data) {

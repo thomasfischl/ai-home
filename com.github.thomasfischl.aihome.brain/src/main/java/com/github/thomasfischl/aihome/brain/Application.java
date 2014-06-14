@@ -13,6 +13,8 @@ import org.encog.ml.data.basic.BasicMLData;
 import org.encog.ml.data.basic.BasicMLDataPair;
 import org.encog.neural.networks.BasicNetwork;
 
+import com.github.thomasfischl.aihome.brain.rule.RuleNode;
+import com.github.thomasfischl.aihome.brain.rule.RuleCreator;
 import com.github.thomasfischl.aihome.communication.sensor.SensorData;
 import com.github.thomasfischl.aihome.communication.sensor.SensorDataGroup;
 import com.github.thomasfischl.aihome.communication.sensor.SensorDataStore;
@@ -64,7 +66,8 @@ public class Application {
   }
 
   private static void analyzeNetwork(String[] inputNeuronNames, String[] outputNeuronNames, BrainTrainer trainer) {
-    List<SensorDataGroup> interestingData = new ArrayList<>();
+    RuleCreator creater = new RuleCreator();
+
     for (int weekDay = Calendar.SUNDAY; weekDay <= Calendar.SATURDAY; weekDay++) {
       for (int hour = 0; hour < 24; hour++) {
         for (int bt = 0; bt <= 1; bt++) {
@@ -74,15 +77,21 @@ public class Application {
 
           // check if relay is on
           if (result.getData(0) > result.getData(1)) {
-            System.out.println("relay on hour==" + hour + " and weekday=" + weekDay + " and bluetooth= " + (bt == 1 ? "true" : "false"));
-            interestingData.add(sensorData);
+            // System.out.println("relay on hour==" + hour + " and weekday=" + weekDay + " and bluetooth= " + (bt == 1 ? "true" : "false"));
+            RuleNode btNode = new RuleNode("BT", getSensorDataValue(sensorData, "BT").getValue());
+            RuleNode tNode = new RuleNode("T", getSensorDataValue(sensorData, "T").getValue());
+            RuleNode wdNode = new RuleNode("WD", getSensorDataValue(sensorData, "WD").getValue());
+
+            btNode.addChild(wdNode);
+            wdNode.addChild(tNode);
+            creater.addTree(btNode);
           }
         }
       }
     }
-    
-    
-    
+
+    creater.merge();
+    creater.generateRules();
   }
 
   private static List<MLDataPair> loadTrainingData(File inputFile, String[] inputNeuronNames, String[] outputNeuronNames)
