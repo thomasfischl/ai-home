@@ -13,12 +13,16 @@ import com.google.gson.Gson;
 
 public class SensorDataStore {
 
-  private File dataStore;
+  private final File dataStore;
 
   private BufferedWriter writer;
 
   public SensorDataStore() {
     dataStore = new File("/tmp/data-store.csv");
+  }
+
+  public SensorDataStore(File dataStore) {
+    this.dataStore = dataStore;
   }
 
   public void storeData(SensorDataGroup data) {
@@ -40,9 +44,9 @@ public class SensorDataStore {
     }
   }
 
-  public List<SensorDataGroup> readSensorData() throws IOException {
+  public List<SensorDataGroup> readSensorData(File store) throws IOException {
     List<SensorDataGroup> result = new ArrayList<>();
-    List<String> lines = FileUtils.readLines(dataStore);
+    List<String> lines = FileUtils.readLines(store);
 
     Gson g = new Gson();
     for (String line : lines) {

@@ -55,7 +55,7 @@
         <configuration>
           <archive>
             <manifest>
-              <mainClass>com.github.thomasfischl.aihome.controller.Application</mainClass>
+              <mainClass>com.github.thomasfischl.aihome.brain.Application</mainClass>
             </manifest>
           </archive>
           <descriptorRefs>
